@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-EzBuy.Web-E9F4B66B-11E0-4130-AED2-5B160EE7D2C8</UserSecretsId>
+    <UserSecretsId>aspnet-EzBuy.Web-F5325984-BFEF-4AEE-8558-2C6EA33D8C14</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\EzBuy.Services\EzBuy.Services.csproj" />
+    <ProjectReference Include="..\EzBuy.Data\EzBuy.Data.csproj" />
+    <ProjectReference Include="..\EzBuy.InputModels\EzBuy.InputModels.csproj" />
+    <ProjectReference Include="..\EzBuy.Services\EzBuy.Services.csproj" />
+    <ProjectReference Include="..\EzBuy.ViewModels\EzBuy.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
