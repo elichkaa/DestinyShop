@@ -1,20 +1,26 @@
 ﻿using EzBuy.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace EzBuy.Data
 {
-    class EzBuyContext : DbContext
+    public class EzBuyContext : IdentityDbContext<User, IdentityRole, string>
     {
+
+        public EzBuyContext(DbContextOptions<EzBuyContext> options)
+            : base(options)
+        {
+        }
+
         public EzBuyContext()
         {
+        }
 
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=.;Database=EzBuyDB;Trusted_Connection=True;");
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CartProducts>()
             .HasKey(bc => new { bc.ProductId, bc.CartId });
 
@@ -41,7 +47,6 @@ namespace EzBuy.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductTags> ProductTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Sale> Sales { get; set; }
     }
 }
