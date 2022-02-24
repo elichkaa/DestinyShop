@@ -22,6 +22,28 @@ namespace EzBuy.Web.Controllers
         {
             return View();
         }
+        public IActionResult Homepage()
+        {
+            return View();
+        }
+        public IActionResult Checkout()
+        {
+            return View();
+        }
+
+        public IActionResult Product()
+        {
+            return View();
+        }
+        public IActionResult Store()
+        {
+            return View();
+        }
+
+        public IActionResult Blankpage()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
