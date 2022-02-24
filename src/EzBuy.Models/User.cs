@@ -28,5 +28,6 @@ namespace EzBuy.Models
         public int? CartId { get; set; }
 
         public Cart Cart { get; set; }
+        public decimal EzBucks { get; set; }
     }
 }

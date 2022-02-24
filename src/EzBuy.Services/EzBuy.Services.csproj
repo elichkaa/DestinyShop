@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EzBuy.Data\EzBuy.Data.csproj" />
+    <ProjectReference Include="..\EzBuy.InputModels\EzBuy.InputModels.csproj" />
     <ProjectReference Include="..\EzBuy.Models\EzBuy.Models.csproj" />
+    <ProjectReference Include="..\EzBuy.ViewModels\EzBuy.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

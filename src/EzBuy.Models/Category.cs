@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace EzBuy.Models
 {
-    public class Category : MainEntity
+    public class Category : EntityName
     {
-        public string Name { get; set; }
         public ICollection<Product> Products { get; set; }
     }
 }

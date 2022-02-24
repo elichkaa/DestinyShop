@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EzBuy.Models
 {
-    public class Manufacturer : MainEntity
+    public class Manufacturer : EntityName
     {
-        public string Name { get; set; }
+        
         public string Description { get; set; }
         public ICollection<Product> Products { get; set; }
     }

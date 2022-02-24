@@ -151,11 +151,11 @@ namespace EzBuy.Data.Migrations
                     b.Property<int?>("CoverImageId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateListed")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("EzBucks")
-                        .HasColumnType("float");
 
                     b.Property<int?>("ManufacturerId")
                         .HasColumnType("int");
@@ -163,8 +163,8 @@ namespace EzBuy.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("SaleId")
                         .HasColumnType("int");
@@ -270,6 +270,9 @@ namespace EzBuy.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("EzBucks")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

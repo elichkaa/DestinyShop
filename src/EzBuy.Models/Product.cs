@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace EzBuy.Models
 {
-    public class Product : MainEntity
+    public class Product : EntityName
     {
-        public string Name { get; set; }
-        public double Price { get; set; }
+        
+        public decimal Price { get; set; }
         public string Description { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
-
         public int? CoverImageId { get; set; }
         public CoverImage CoverImage { get; set; }
         public ICollection<Image> Images { get; set; }
@@ -27,6 +26,6 @@ namespace EzBuy.Models
         public ICollection<CartProducts> Carts { get; set; }
         public int? SaleId { get; set; }
         public Sale Sale{ get; set; }// probably shoud be many to many
-        public double EzBucks { get; set; }
+        public DateTime? DateListed { get; set; }
     }
 }

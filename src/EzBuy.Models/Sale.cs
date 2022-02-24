@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EzBuy.Models
 {
-    public class Sale:MainEntity
+    public class Sale:EntityName
     {
-        public string Name { get; set; }
+        
         public string Description { get; set; }
         public bool Seasonal { get; set; }
         public bool Company { get; set; }
