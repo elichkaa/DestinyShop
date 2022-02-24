@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EzBuyContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDbContext<EzBuyContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
