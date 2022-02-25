@@ -80,9 +80,44 @@ namespace EzBuy.Services
                 }
             }
         }
-        public int AddProduct(AddProductInputModel input, User user, string basePath)
+        public Manufacturer FindManufacturer(string manufacturerName)
         {
-            throw new NotImplementedException();
+            var manufacturer = context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
+            return manufacturer;
+        }
+        public ICollection<Tag> FindTags(string tagString)
+        {
+            var tags = tagString.Split(",").ToList();
+            var tagsCollection = context.Tags.Where(x => tags.Contains(x.Name)).ToList();
+            return tagsCollection;
+        }
+
+        public void AddProduct(AddProductInputModel input, User user)
+        {
+            AddProductComponents(input);
+            var productId = this.GetBiggestId<Product>() + 1;
+            var newProduct = new Product
+            {
+                
+                Id = productId,
+                Name = input.Name,
+                Price=input.Price,
+                Manufacturer=FindManufacturer(input.Manufacturer),
+                //Category = input.Category, tdl drop down menu or check or smthng idk
+                User = user,
+            };
+            context.Products.Add(newProduct);
+            context.SaveChanges();
+            newProduct=context.Products.FirstOrDefault(x=>x.Name==input.Name);
+            AddTagsToProduct(FindTags(input.Tags), newProduct);
+        }
+        public void AddTagsToProduct(ICollection<Tag> tags, Product product)
+        {
+            foreach (var tag in tags)
+            {
+                context.ProductTags.Add(new ProductTags(product.Id, tag.Id));
+            }
+            context.SaveChanges();
         }
         public bool CheckIfEntityExists<T>(string name) where T : EntityName
         {

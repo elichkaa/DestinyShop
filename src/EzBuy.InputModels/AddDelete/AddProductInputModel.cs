@@ -14,7 +14,7 @@ namespace EzBuy.InputModels.AddDelete
         public string Name { get; set; }
         [Required]
         [Display(Name = "Product price")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         [Display(Name = "Product description")]

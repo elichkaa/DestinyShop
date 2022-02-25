@@ -12,6 +12,6 @@ namespace EzBuy.Services.Contracts
     public interface IProductService
     {
         public List<ProductOnAllPageViewModel> GetAll(int currentPage);
-        public int AddProduct(AddProductInputModel input, User user, string basePath);
+        public void AddProduct(AddProductInputModel input, User user);
     }
 }
