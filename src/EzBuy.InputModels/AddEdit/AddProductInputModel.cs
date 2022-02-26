@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EzBuy.InputModels.AddDelete
+namespace EzBuy.InputModels.AddEdit
 {
     public class AddProductInputModel
     {

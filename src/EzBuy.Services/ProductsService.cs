@@ -1,9 +1,10 @@
 ﻿using EzBuy.Data;
-using EzBuy.InputModels.AddDelete;
+using EzBuy.InputModels.AddEdit;
 using EzBuy.Models;
 using EzBuy.Services.Contracts;
 using EzBuy.ViewModels.Products;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace EzBuy.Services
 {
@@ -119,6 +120,19 @@ namespace EzBuy.Services
             }
             context.SaveChanges();
         }
+        public void DeleteProduct(string productName)
+        {
+            var product = context.Products.FirstOrDefault(x => x.Name == productName);
+            if (product != null)
+            {
+                context.Products.Remove(product);
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("No product with this name exists", (productName));
+            }
+        }
         public bool CheckIfEntityExists<T>(string name) where T : EntityName
         {
             return this.context.Set<T>().Any(x => x.Name.ToLower() == name.ToLower());
@@ -132,5 +146,72 @@ namespace EzBuy.Services
 
             return 0;
         }
+
+        public void EditProduct(string productName, EditProductInputModel input, User user)
+        {
+            if (CheckIfEntityExists<Product>(productName))
+            {
+                var product = context.Products.FirstOrDefault(x => x.Name == productName);
+                if (input.NewName != null)
+                {
+                    product.Name = input.NewName;
+                }
+                if (input.NewPrice != 0)
+                {
+                    product.Price = input.NewPrice;
+                }
+                if(input.NewDescription != null)
+                {
+                    product.Description = input.NewDescription;
+                }
+                context.Update(product);
+                context.SaveChanges();
+
+                if (input.NewTags != null)
+                {
+                    AddNonexistentTags(input.NewTags);
+                    AddTagsToProduct(FindTags(input.NewTags),product);
+                }
+                if (input.RemoveTags != null)
+                {
+                    RemoveTags(FindTags(input.RemoveTags), product);
+                }
+            }
+            else {
+            throw new ArgumentException("No product with this name exists", (productName));
+            }
+            
+        }
+        public void RemoveTags(ICollection<Tag>tags,Product product)
+        {
+            foreach (var tag in tags)
+            {
+                ProductTags connection = (ProductTags)context.ProductTags.Where(x => x.ProductId == product.Id && x.TagId == tag.Id);
+                context.ProductTags.Remove(connection);
+            }
+            context.SaveChanges();
+        }
+        public ICollection<ProductTags> FindProductTags(Product product)
+        {
+            var connections = context.ProductTags.Where(x => x.ProductId==product.Id).ToList();
+            return connections;
+        }
+        public void AddNonexistentTags(string tagString)
+        {
+                var tags = new List<string>();
+                tags = tagString.Split(",").ToList();
+                foreach (var tag in tags)
+                {
+                    if (!CheckIfEntityExists<Tag>(tag))
+                    {
+                        context.Tags.Add(new Tag
+                        {
+                            Id = GetBiggestId<Tag>() + 1,
+                            Name = tag
+                        });
+                    }
+                    context.SaveChanges();
+                }
+            }
+        }
     }
-}

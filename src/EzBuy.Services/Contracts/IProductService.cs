@@ -1,4 +1,4 @@
-﻿using EzBuy.InputModels.AddDelete;
+﻿using EzBuy.InputModels.AddEdit;
 using EzBuy.Models;
 using EzBuy.ViewModels.Products;
 using System;
@@ -13,5 +13,6 @@ namespace EzBuy.Services.Contracts
     {
         public List<ProductOnAllPageViewModel> GetAll(int currentPage);
         public void AddProduct(AddProductInputModel input, User user);
+        public void EditProduct(string product, EditProductInputModel input, User user);
     }
 }
