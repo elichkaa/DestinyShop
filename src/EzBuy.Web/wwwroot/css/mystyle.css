@@ -1,0 +1,15 @@
+﻿#content{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+#modalconf {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+
+.btn-default {
+    background-color: #D10024;
+    color: #FFF;
+}

@@ -16,6 +16,8 @@
     <link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css">
     <link type="text/css" rel="stylesheet" href="~/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="~/css/mystyle.css" />
+    @RenderSection("scripts", required: false)
 </head>
 
 <body>
@@ -135,7 +137,9 @@
             </div>
         </div>
     </nav>
-    @RenderBody()
+    <div class="container" id="content">
+        @RenderBody()
+    </div>
     <footer id="footer">
         <div class="section">
             <div class="container">
@@ -192,6 +196,5 @@
     <script src="~/js/nouislider.min.js"></script>
     <script src="~/js/jquery.zoom.min.js"></script>
     <script src="~/js/main.js"></script>
-    @await RenderSectionAsync("scripts", required: false)
 </body>
 </html>
