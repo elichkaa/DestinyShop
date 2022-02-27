@@ -8,6 +8,10 @@ namespace EzBuy.Models
 {
     public class ProductTags
     {
+        public ProductTags()
+        {
+
+        }
         public ProductTags(int productId, int tagId)
         {
             ProductId = productId;
