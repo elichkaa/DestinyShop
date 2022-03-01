@@ -58,7 +58,7 @@ namespace EzBuy.Tests
             this.context.Tags.Add(new Tag
             {
                 Id = 1,
-                Name = "dope"
+                Name = "dope"  
             });
             this.context.SaveChanges();
             this.context.Tags.Add(new Tag
@@ -72,6 +72,25 @@ namespace EzBuy.Tests
             NUnit.Framework.Assert.AreEqual(2, tags.Count);
             NUnit.Framework.Assert.AreEqual(tags.ToList()[0].Name, "dope");
             NUnit.Framework.Assert.AreEqual(tags.ToList()[1].Name, "rad");
+        }
+        [Fact]
+        public void FindTagsReturnsUniqeTags()
+        {
+            this.context.Tags.Add(new Tag
+            {
+                Id = 1,
+                Name = "dope"
+            });
+            this.context.SaveChanges();
+            this.context.Tags.Add(new Tag
+            {
+                Id = 2,
+                Name = "rad"
+            });
+            this.context.SaveChanges();
+            var tags = productsService.FindTags("magnificent,bold,dope,cool,rad,idk,dope,dope,dope");
+            NUnit.Framework.Assert.NotNull(tags);
+            NUnit.Framework.Assert.AreEqual(2, tags.Count);
         }
         [Fact]
         public void AddProductAddsProducts()
@@ -90,6 +109,74 @@ namespace EzBuy.Tests
             NUnit.Framework.Assert.AreEqual(1, this.context.Products.Count());
             //I shall return
         }
+        [Fact]
+        public void AddNonexistentTagsAdsNonexistentTags()
+        {
+            AddProductInputModel input = new AddProductInputModel()
+            {
+                Name = "AwesomeProduct",
+                Manufacturer = "Awesome INC",
+                Tags = "cool,awesome,nice",
+                Price = 20,
+                Description = "Wow so frikin cool",
+                Category = "Gaming"
+            };
+            this.productsService.AddProduct(input, new User());
+            this.productsService.AddNonexistentTags("incredible,nice,vroom,cool,typical,awesome");
+           NUnit.Framework.Assert.AreEqual(6, this.context.Tags.Count());
+            var tag = this.context.Tags.FirstOrDefault(x => x.Name == "awesome");
+            NUnit.Framework.Assert.AreEqual(tag.Id,2);
+            tag = this.context.Tags.FirstOrDefault(x => x.Name == "typical");
+            NUnit.Framework.Assert.AreEqual(tag.Id, 6);
+        }
+        [Fact]
+        public void AddProductsCreatesConnections()
+        {
+            var tags = new List<Tag>();
+            tags.Add(new Tag
+            {
+                Id = 1,
+                Name = "cool"
+            });
+            tags.Add(new Tag
+            {
+                Id = 2,
+                Name = "rad"
+            });
+            
+            AddProductInputModel input = new AddProductInputModel()
+            {
+                Name = "AwesomeProduct",
+                Manufacturer = "Awesome INC",
+                Tags = "nice",
+                Price = 20,
+                Description = "Wow so frikin cool",
+                Category = "Gaming"
+            };
+            this.productsService.AddNonexistentTags("cool,rad");
+            this.productsService.AddProduct(input, new User());
 
+            var product= context.Products.FirstOrDefault(x => x.Name == "AwesomeProduct");
+            this.productsService.AddTagsToProduct(tags, product);
+            NUnit.Framework.Assert.AreEqual(3, product.Tags.Count());
+        }
+        [Fact]
+        public void DeleteProductDeletes()
+        {
+            AddProductInputModel input = new AddProductInputModel()
+            {
+                Name = "AwesomeProduct",
+                Manufacturer = "Awesome INC",
+                Tags = "nice,cool,rad",
+                Price = 20,
+                Description = "Wow so frikin cool",
+                Category = "Gaming"
+            };
+            this.productsService.AddProduct(input, new User());
+            NUnit.Framework.Assert.AreEqual(3, this.context.ProductTags.Count());
+            this.productsService.DeleteProduct("AwesomeProduct");
+            NUnit.Framework.Assert.AreEqual(0, this.context.Products.Count());
+            NUnit.Framework.Assert.AreEqual(0, this.context.ProductTags.Count());
+        }
     }
 }
