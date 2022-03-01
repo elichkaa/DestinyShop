@@ -93,7 +93,7 @@ namespace EzBuy.Services
             return tagsCollection;
         }
 
-        public void AddProduct(AddProductInputModel input, User user)
+        public int AddProduct(AddProductInputModel input, User user)
         {
             AddProductComponents(input);
             var productId = this.GetBiggestId<Product>() + 1;
@@ -111,6 +111,7 @@ namespace EzBuy.Services
             context.SaveChanges();
             newProduct=context.Products.FirstOrDefault(x=>x.Name==input.Name);
             AddTagsToProduct(FindTags(input.Tags), newProduct);
+            return newProduct.Id;
         }
         public void AddTagsToProduct(ICollection<Tag> tags, Product product)
         {

@@ -12,6 +12,7 @@ namespace EzBuy.InputModels.AddEdit
         [Required]
         [Display(Name="Product name")]
         public string Name { get; set; }
+
         [Required]
         [Display(Name = "Product price")]
         public decimal Price { get; set; }
@@ -19,6 +20,7 @@ namespace EzBuy.InputModels.AddEdit
         [Required]
         [Display(Name = "Product description")]
         public string Description { get; set; }
+
         [Required]
         [Display(Name = "Product category")]
         public string Category { get; set; }
@@ -30,12 +32,12 @@ namespace EzBuy.InputModels.AddEdit
 
         //And immages too
         
-        [Display(Name = "Product manufacturer/ optional")]
+        [Display(Name = "Product manufacturer")]
         public string Manufacturer { get; set; }
 
-        [Display(Name = "Tags/ optional")]
+        [Display(Name = "Tags")]
         public string Tags { get; set; }
 
-
+        
     }
 }

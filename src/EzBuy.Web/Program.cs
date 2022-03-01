@@ -1,5 +1,7 @@
 using EzBuy.Data;
 using EzBuy.Models;
+using EzBuy.Services;
+using EzBuy.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EzBuyContext>(options =>
-    options.UseSqlServer(connectionString));builder.Services.AddDbContext<EzBuyContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -24,6 +25,9 @@ builder.Services.AddDefaultIdentity<User>(options =>
     options.Password.RequireNonAlphanumeric = false;
 })
     .AddEntityFrameworkStores<EzBuyContext>();
+
+builder.Services.AddTransient<IProductService, ProductsService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

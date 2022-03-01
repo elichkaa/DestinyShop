@@ -12,7 +12,7 @@ namespace EzBuy.Services.Contracts
     public interface IProductService
     {
         public List<ProductOnAllPageViewModel> GetAll(int currentPage);
-        public void AddProduct(AddProductInputModel input, User user);
+        public int AddProduct(AddProductInputModel input, User user);
         public void EditProduct(string product, EditProductInputModel input, User user);
     }
 }
