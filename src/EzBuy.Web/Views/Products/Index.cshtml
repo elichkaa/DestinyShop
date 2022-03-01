@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Product Management";
+}
+
+<div id="breadcrumb" class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="breadcrumb-header">Manage products</h3>
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Products</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem; padding: 10px;border:solid black 1.5px;">
+                            <div class="product-body">
+                                <h5 class="card-title">Add product</h5>
+                                <p class="card-text">Create a brand new product with our simple form. Use as many pictures as possible!</p>
+                                <a asp-controller="Products" asp-action="Add" class="btn btn-default">Continue</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem; padding: 10px;border:solid black 1.5px;">
+                            <div class="product-body">
+                                <h5 class="card-title">Edit your products</h5>
+                                <p class="card-text">Made a mistake? You can edit your product in seconds!</p>
+                                <a asp-controller="Products" asp-action="Edit" class="btn btn-default">Continue</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem; padding: 10px; border:solid black 1.5px;">
+                            <div class="product-body">
+                                <h5 class="card-title">Delete product</h5>
+                                <p class="card-text">Your product is not relevant anymore? Use this function to remove it from the store!</p>
+                                <a asp-controller="Products" asp-action="Delete" class="btn btn-default">Continue</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

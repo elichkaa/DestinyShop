@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EzBuy.Data.Migrations
 {
     [DbContext(typeof(EzBuyContext))]
-    [Migration("20220218093717_Initial")]
+    [Migration("20220301171620_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -59,7 +62,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -72,7 +78,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Company", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -88,7 +97,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.CoverImage", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -108,7 +120,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Image", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -126,7 +141,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Manufacturer", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -142,7 +160,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -153,11 +174,11 @@ namespace EzBuy.Data.Migrations
                     b.Property<int?>("CoverImageId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateListed")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("EzBucks")
-                        .HasColumnType("float");
 
                     b.Property<int?>("ManufacturerId")
                         .HasColumnType("int");
@@ -165,8 +186,8 @@ namespace EzBuy.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("SaleId")
                         .HasColumnType("int");
@@ -210,7 +231,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("Categorial")
                         .HasColumnType("bit");
@@ -235,7 +259,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -272,6 +299,9 @@ namespace EzBuy.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("EzBucks")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

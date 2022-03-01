@@ -33,6 +33,7 @@ namespace EzBuy.Data.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CartId = table.Column<int>(type: "int", nullable: true),
+                    EzBucks = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +58,8 @@ namespace EzBuy.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -69,9 +71,10 @@ namespace EzBuy.Data.Migrations
                 name: "Companies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,9 +85,10 @@ namespace EzBuy.Data.Migrations
                 name: "Manufacturers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,12 +99,13 @@ namespace EzBuy.Data.Migrations
                 name: "Sales",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Seasonal = table.Column<bool>(type: "bit", nullable: false),
                     Company = table.Column<bool>(type: "bit", nullable: false),
-                    Categorial = table.Column<bool>(type: "bit", nullable: false)
+                    Categorial = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,7 +116,8 @@ namespace EzBuy.Data.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -241,7 +247,8 @@ namespace EzBuy.Data.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -258,9 +265,9 @@ namespace EzBuy.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<double>(type: "float", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
@@ -269,7 +276,8 @@ namespace EzBuy.Data.Migrations
                     UserId = table.Column<int>(type: "int", nullable: true),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SaleId = table.Column<int>(type: "int", nullable: true),
-                    EzBucks = table.Column<double>(type: "float", nullable: false)
+                    DateListed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -329,7 +337,8 @@ namespace EzBuy.Data.Migrations
                 name: "CoverImages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -347,7 +356,8 @@ namespace EzBuy.Data.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true)
                 },

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using EzBuy.Models
+@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,6 +20,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css">
     <link type="text/css" rel="stylesheet" href="~/css/style.css" />
     <link type="text/css" rel="stylesheet" href="~/css/mystyle.css" />
+    <link type="text/css" rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
     @RenderSection("scripts", required: false)
 </head>
 
@@ -32,6 +36,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Product"> Product</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Store">Store</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Blankpage">Blank page</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                    }
                 </ul>
                 <ul class="header-links pull-right">
                     <partial name="_LoginPartial" />
@@ -196,5 +204,7 @@
     <script src="~/js/nouislider.min.js"></script>
     <script src="~/js/jquery.zoom.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/lib/popper.js/umd/popper.min.js"></script>
 </body>
 </html>

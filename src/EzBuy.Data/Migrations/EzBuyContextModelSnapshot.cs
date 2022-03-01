@@ -25,7 +25,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -57,7 +60,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -70,7 +76,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Company", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -86,7 +95,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.CoverImage", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -106,7 +118,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Image", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -124,7 +139,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Manufacturer", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -140,7 +158,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -208,7 +229,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("Categorial")
                         .HasColumnType("bit");
@@ -233,7 +257,10 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
