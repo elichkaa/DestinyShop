@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using EzBuy.Models
+@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -32,6 +35,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Product"> Product</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Store">Store</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Blankpage">Blank page</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                    }
                 </ul>
                 <ul class="header-links pull-right">
                     <partial name="_LoginPartial" />
