@@ -1,3 +1,4 @@
+using CloudinaryDotNet;
 using EzBuy.Data;
 using EzBuy.Models;
 using EzBuy.Services;
@@ -28,6 +29,14 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddTransient<IProductService, ProductsService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
+
+Account account = new Account(
+                builder.Configuration.GetSection("Cloudinary:cloud").Value,
+                builder.Configuration.GetSection("Cloudinary:apiKey").Value,
+                builder.Configuration.GetSection("Cloudinary:apiSecret").Value);
+
+Cloudinary cloudinary = new Cloudinary(account);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
