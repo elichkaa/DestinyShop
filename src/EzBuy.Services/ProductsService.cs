@@ -1,8 +1,10 @@
-﻿using EzBuy.Data;
+﻿using CloudinaryDotNet;
+using EzBuy.Data;
 using EzBuy.InputModels.AddEdit;
 using EzBuy.Models;
 using EzBuy.Services.Contracts;
 using EzBuy.ViewModels.Products;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -11,10 +13,14 @@ namespace EzBuy.Services
     public class ProductsService : IProductService
     {
         private readonly EzBuyContext context;
+        private readonly ICloudinaryService cloudinaryService;
+        private readonly Cloudinary cloudinary;
         private const int productsOnPage = 6;
-        public ProductsService(EzBuyContext context)
+        public ProductsService(EzBuyContext context, ICloudinaryService cloudinaryService, Cloudinary cloudinary)
         {
             this.context = context;
+            this.cloudinaryService = cloudinaryService;
+            this.cloudinary = cloudinary;
         }
 
         public List<ProductOnAllPageViewModel> GetAll(int currentPage)
@@ -99,19 +105,26 @@ namespace EzBuy.Services
             return tagsCollection;
         }
 
-        public int AddProduct(AddProductInputModel input, User user)
+        public async Task<int> AddProductAsync(AddProductInputModel input, User user, string imgPath)
         {
             AddProductComponents(input);
-            //var productId = this.GetBiggestId<Product>() + 1;
+
+            input.Images.Add(input.Cover);
+            var uploadedImages = await UploadPicturesToCloudinary(input.Images, imgPath);
+            var cover = uploadedImages.Last();
+
             var newProduct = new Product
             {
                 //Id = productId,
                 Name = input.Name,
                 Description = input.Description,
-                Price=input.Price,
-                Manufacturer=FindManufacturer(input.Manufacturer),
+                Price = input.Price,
+                Manufacturer = FindManufacturer(input.Manufacturer),
                 Category = GetCategory(input.Category),
                 User = user,
+                CoverImage = cover,
+                Images = uploadedImages.Take(uploadedImages.Count - 1).ToList()
+
             };
             context.Products.Add(newProduct);
             context.SaveChanges();
@@ -119,6 +132,13 @@ namespace EzBuy.Services
             AddTagsToProduct(FindTags(input.Tags), newProduct);
             return newProduct.Id;
         }
+
+        public async Task<List<Image>> UploadPicturesToCloudinary(ICollection<IFormFile> images, string imgPath)
+        {
+            var uploadedImages = images != null ? await this.cloudinaryService.UploadAsync(images, imgPath) : null;
+            return uploadedImages.ToList();
+        }
+
         public void AddTagsToProduct(ICollection<Tag> tags, Product product)
         {
             foreach (var tag in tags)

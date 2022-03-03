@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EzBuy.Data.Migrations
 {
     [DbContext(typeof(EzBuyContext))]
-    [Migration("20220303113347_Initial")]
+    [Migration("20220303130845_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,29 +94,6 @@ namespace EzBuy.Data.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("EzBuy.Models.CoverImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique()
-                        .HasFilter("[ProductId] IS NOT NULL");
-
-                    b.ToTable("CoverImages");
-                });
-
             modelBuilder.Entity("EzBuy.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -128,12 +105,19 @@ namespace EzBuy.Data.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProductId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
+
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("Images");
                 });
@@ -527,20 +511,15 @@ namespace EzBuy.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EzBuy.Models.CoverImage", b =>
-                {
-                    b.HasOne("EzBuy.Models.Product", "Product")
-                        .WithOne("CoverImage")
-                        .HasForeignKey("EzBuy.Models.CoverImage", "ProductId");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("EzBuy.Models.Image", b =>
                 {
                     b.HasOne("EzBuy.Models.Product", "Product")
+                        .WithOne("CoverImage")
+                        .HasForeignKey("EzBuy.Models.Image", "ProductId");
+
+                    b.HasOne("EzBuy.Models.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId1");
 
                     b.Navigation("Product");
                 });

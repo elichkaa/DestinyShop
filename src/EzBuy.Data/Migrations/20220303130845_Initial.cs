@@ -333,32 +333,14 @@ namespace EzBuy.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CoverImages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CoverImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CoverImages_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    ProductId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -366,6 +348,11 @@ namespace EzBuy.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
                         column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Images_Products_ProductId1",
+                        column: x => x.ProductId1,
                         principalTable: "Products",
                         principalColumn: "Id");
                 });
@@ -456,16 +443,16 @@ namespace EzBuy.Data.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CoverImages_ProductId",
-                table: "CoverImages",
+                name: "IX_Images_ProductId",
+                table: "Images",
                 column: "ProductId",
                 unique: true,
                 filter: "[ProductId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_ProductId",
+                name: "IX_Images_ProductId1",
                 table: "Images",
-                column: "ProductId");
+                column: "ProductId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -517,9 +504,6 @@ namespace EzBuy.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartProducts");
-
-            migrationBuilder.DropTable(
-                name: "CoverImages");
 
             migrationBuilder.DropTable(
                 name: "Images");

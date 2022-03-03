@@ -18,9 +18,9 @@ namespace EzBuy.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<ICollection<CoverImage>> UploadAsync(ICollection<IFormFile> files, string path)
+        public async Task<ICollection<Image>> UploadAsync(ICollection<IFormFile> files, string path)
         {
-            ICollection<CoverImage> images = new List<CoverImage>();
+            ICollection<Image> images = new List<Image>();
 
             foreach (var file in files)
             {
@@ -48,7 +48,7 @@ namespace EzBuy.Services
 
             await cloudinary.DeleteResourcesAsync(delParams);
         }
-        private async Task<CoverImage> UploadImageAsync(IFormFile file, string path)
+        private async Task<Image> UploadImageAsync(IFormFile file, string path)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace EzBuy.Services
 
                 var result = await this.cloudinary.UploadAsync(uploadParams);
 
-                var img = new CoverImage
+                var img = new Image
                 {
                     Url = result.Url.AbsoluteUri,
                 };
@@ -92,7 +92,5 @@ namespace EzBuy.Services
         {
             return path.Split("/").TakeLast(1).ToList()[0].Split(".").ToList()[0];
         }
-    }
-}
     }
 }

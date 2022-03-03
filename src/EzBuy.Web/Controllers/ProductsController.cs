@@ -15,17 +15,20 @@ namespace EzBuy.Web.Controllers
         private readonly ICategoryService categoriesService;
         private readonly IProductService productService;
         private readonly UserManager<User> userManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public ILogger<ProductsController> _logger { get; set; }
 
         public ProductsController(
             ICategoryService categoriesService, 
             IProductService productService,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.categoriesService = categoriesService;
             this.productService = productService;
             this.userManager = userManager;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -46,6 +49,8 @@ namespace EzBuy.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddProductInputModel input)
         {
+            var categories = this.categoriesService.GetAllCategories();
+            this.ViewBag.Categories = categories;
             if (!ModelState.IsValid)
             {
                 this.ModelState.AddModelError(string.Empty, "Invalid arguments");
@@ -55,7 +60,7 @@ namespace EzBuy.Web.Controllers
             var currentUser = await this.userManager.GetUserAsync(this.User);
             try
             {
-                int newProductId = this.productService.AddProduct(input, currentUser);
+                int newProductId = await this.productService.AddProductAsync(input, currentUser, $"{this.webHostEnvironment.WebRootPath}/img/");
             }
             catch (Exception ex)
             {

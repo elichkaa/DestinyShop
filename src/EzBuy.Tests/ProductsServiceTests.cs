@@ -7,6 +7,8 @@ using System.Linq;
 using EzBuy.Services;
 using EzBuy.InputModels.AddEdit;
 using EzBuy.Models;
+using EzBuy.Services.Contracts;
+using CloudinaryDotNet;
 
 namespace EzBuy.Tests
 {
@@ -15,11 +17,15 @@ namespace EzBuy.Tests
         private readonly EzBuyContext context;
         private readonly ProductsService productsService;
         private readonly TestSettings settings = new TestSettings();
+        private readonly ICloudinaryService cloudinaryService;
+        private readonly Cloudinary cloudinary;
 
-        public ProductsServiceTests()
+        public ProductsServiceTests(ICloudinaryService cloudinaryService, Cloudinary cloudinary)
         {
             this.context = settings.InitializeDatabase().GetAwaiter().GetResult();
-            this.productsService = new ProductsService(context);
+            this.cloudinaryService = cloudinaryService;
+            this.cloudinary = cloudinary;
+            this.productsService = new ProductsService(context, cloudinaryService, cloudinary);
         }
 
         [Fact]
@@ -105,7 +111,7 @@ namespace EzBuy.Tests
                 Description = "Wow so frikin cool",
                 Category = 1
             };
-            this.productsService.AddProduct(input, new User());
+            this.productsService.AddProductAsync(input, new User(), "");
             NUnit.Framework.Assert.AreEqual(1, this.context.Products.Count());
             //I shall return
         }
@@ -121,7 +127,7 @@ namespace EzBuy.Tests
                 Description = "Wow so frikin cool",
                 Category = 1
             };
-            this.productsService.AddProduct(input, new User());
+            this.productsService.AddProductAsync(input, new User(), "");
             this.productsService.AddNonexistentTags("incredible,nice,vroom,cool,typical,awesome");
            NUnit.Framework.Assert.AreEqual(6, this.context.Tags.Count());
             var tag = this.context.Tags.FirstOrDefault(x => x.Name == "awesome");
@@ -154,7 +160,7 @@ namespace EzBuy.Tests
                 Category = 1
             };
             this.productsService.AddNonexistentTags("cool,rad");
-            this.productsService.AddProduct(input, new User());
+            this.productsService.AddProductAsync(input, new User(), "");
 
             var product= context.Products.FirstOrDefault(x => x.Name == "AwesomeProduct");
             this.productsService.AddTagsToProduct(tags, product);
@@ -172,7 +178,7 @@ namespace EzBuy.Tests
                 Description = "Wow so frikin cool",
                 Category = 1
             };
-            this.productsService.AddProduct(input, new User());
+            this.productsService.AddProductAsync(input, new User(), "");
             NUnit.Framework.Assert.AreEqual(3, this.context.ProductTags.Count());
             this.productsService.DeleteProduct("AwesomeProduct");
             NUnit.Framework.Assert.AreEqual(0, this.context.Products.Count());

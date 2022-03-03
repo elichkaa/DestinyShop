@@ -6,7 +6,7 @@ namespace EzBuy.Services.Contracts
 {
     public interface ICloudinaryService
     {
-        public Task<ICollection<CoverImage>> UploadAsync(ICollection<IFormFile> files, string basePath);
+        public Task<ICollection<Image>> UploadAsync(ICollection<IFormFile> files, string basePath);
 
         public Task DeleteImageAsync(Cloudinary cloudinary, string path);
 

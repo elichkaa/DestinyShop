@@ -35,13 +35,12 @@ namespace EzBuy.Data
             modelBuilder.Entity<Product>()
             .HasOne(a => a.CoverImage)
             .WithOne(b => b.Product)
-            .HasForeignKey<CoverImage>(b => b.ProductId);
+            .HasForeignKey<Image>(b => b.ProductId);
         }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProducts> CartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<CoverImage> CoverImages { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Product> Products { get; set; }
