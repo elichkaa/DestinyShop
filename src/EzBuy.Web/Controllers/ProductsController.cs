@@ -72,11 +72,19 @@ namespace EzBuy.Web.Controllers
         }
         public async Task<IActionResult> Edit()
         {
+            
             return View();
         }
+
         public async Task<IActionResult> Delete()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Overview()
+        {
+            var products = productService.GetProductsByUserId(this.User.Identity.Name);
+            return View(products);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

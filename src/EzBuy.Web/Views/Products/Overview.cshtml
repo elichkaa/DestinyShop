@@ -1,0 +1,51 @@
+﻿@using EzBuy.ViewModels.Products
+@model List<ProductOnAllPageViewModel>
+@{
+    ViewData["Title"] = "Products overview";
+}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h3 class="title">Your products</h3>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="products-tabs">
+                        <div id="tab2" class="tab-pane fade in active">
+                            <div class="products-slick" data-nav="#slick-nav-2">
+                                @{
+                                    for (int i = 0; i < @Model.Count; i++)
+                                    {
+                                        <div class="product">
+                                            <div class="product-img">
+                                                <img src="@Model[i].Cover" alt="">
+                                                <div class="product-label">
+                                                    <span class="new">@Model[i].Category</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-body">
+                                                <p class="product-category">@Model[i].Category</p>
+                                                <h3 class="product-name"><a href="#">@Model[i].Name</a></h3>
+                                                <h4 class="product-price">@Model[i].Price<del class="product-old-price"> @(Model[i].Price + (decimal)9.99)</del></h4>
+                                                <div class="product-btns">
+                                                    <button class="add-to-wishlist"><i class="fa-solid fa-pencil"></i><span class="tooltipp">Edit</span></button>
+                                                    <button class="add-to-compare"><i class="fa-solid fa-trash-can"></i><span class="tooltipp">Delete</span></button>
+                                                    <button class="quick-view"><i class="fa-solid fa-dragon"></i><span class="tooltipp">View</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div id="slick-nav-2" class="products-slick-nav"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

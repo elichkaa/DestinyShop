@@ -25,33 +25,33 @@ namespace EzBuy.Services
 
         public List<ProductOnAllPageViewModel> GetAll(int currentPage)
         {
-            var pageCount=this.GetMaxPages();
+            var pageCount = this.GetMaxPages();
             if (currentPage <= 0 || currentPage > pageCount)
             {
                 return null;
             }
-            var products=context.
+            var products = context.
                 Products.
-                OrderByDescending(x=>x.DateListed).
+                OrderByDescending(x => x.DateListed).
                 Select(x => new ProductOnAllPageViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    SellerName= x.User.UserName,
+                    SellerName = x.User.UserName,
                     Description = x.Description,
                     Price = x.Price,
                     PageCount = (int)pageCount,
-                    CurrentPage = currentPage
-                }).Skip((currentPage-1)*productsOnPage).Take(productsOnPage).ToList();
+                    CurrentPage = currentPage,
+                    Cover = x.CoverImage.Url
+                }).Skip((currentPage - 1) * productsOnPage).Take(productsOnPage).ToList();
             return products;
-                //Cover=x.CoverImage,}
         }
 
         public decimal GetMaxPages() => Math.Ceiling((decimal)context.Products.Count() / productsOnPage);
 
-        public void AddProductComponents (AddProductInputModel input)
+        public void AddProductComponents(AddProductInputModel input)
         {
-            if (input.Name==null ||input.Price==0||input.Description==null||input.Category==null)
+            if (input.Name == null || input.Price == 0 || input.Description == null || input.Category == null)
             {
                 throw new ArgumentException("Dont be shy put some more");
             }
@@ -128,7 +128,7 @@ namespace EzBuy.Services
             };
             context.Products.Add(newProduct);
             context.SaveChanges();
-            newProduct=context.Products.FirstOrDefault(x=>x.Name==input.Name);
+            newProduct = context.Products.FirstOrDefault(x => x.Name == input.Name);
             AddTagsToProduct(FindTags(input.Tags), newProduct);
             return newProduct.Id;
         }
@@ -187,7 +187,7 @@ namespace EzBuy.Services
                 {
                     product.Price = input.NewPrice;
                 }
-                if(input.NewDescription != null)
+                if (input.NewDescription != null)
                 {
                     product.Description = input.NewDescription;
                 }
@@ -197,19 +197,20 @@ namespace EzBuy.Services
                 if (input.NewTags != null)
                 {
                     AddNonexistentTags(input.NewTags);
-                    AddTagsToProduct(FindTags(input.NewTags),product);
+                    AddTagsToProduct(FindTags(input.NewTags), product);
                 }
                 if (input.RemoveTags != null)
                 {
                     RemoveTags(FindTags(input.RemoveTags), product);
                 }
             }
-            else {
-            throw new ArgumentException("No product with this name exists", (productName));
+            else
+            {
+                throw new ArgumentException("No product with this name exists", (productName));
             }
-            
+
         }
-        public void RemoveTags(ICollection<Tag>tags,Product product)
+        public void RemoveTags(ICollection<Tag> tags, Product product)
         {
             foreach (var tag in tags)
             {
@@ -220,25 +221,42 @@ namespace EzBuy.Services
         }
         public ICollection<ProductTags> FindProductTags(Product product)
         {
-            var connections = context.ProductTags.Where(x => x.ProductId==product.Id).ToList();
+            var connections = context.ProductTags.Where(x => x.ProductId == product.Id).ToList();
             return connections;
         }
         public void AddNonexistentTags(string tagString)
         {
-                var tags = new List<string>();
-                tags = tagString.Split(",").ToList();
-                foreach (var tag in tags)
+            var tags = new List<string>();
+            tags = tagString.Split(",").ToList();
+            foreach (var tag in tags)
+            {
+                if (!CheckIfEntityExists<Tag>(tag))
                 {
-                    if (!CheckIfEntityExists<Tag>(tag))
+                    context.Tags.Add(new Tag
                     {
-                        context.Tags.Add(new Tag
-                        {
-                            //Id = GetBiggestId<Tag>() + 1,
-                            Name = tag
-                        });
-                    }
-                    context.SaveChanges();
+                        //Id = GetBiggestId<Tag>() + 1,
+                        Name = tag
+                    });
                 }
+                context.SaveChanges();
             }
         }
+
+        public ICollection<ProductOnAllPageViewModel> GetProductsByUserId(string username)
+        {
+            var products = context.Products
+                .Where(x => x.User.UserName == username)
+                .Select(x => new ProductOnAllPageViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SellerName = x.User.UserName,
+                    Description = x.Description,
+                    Price = x.Price,
+                    Cover = x.CoverImage.Url,
+                    Category = x.Category.Name
+                }).ToList();
+            return products;
+        }
     }
+}

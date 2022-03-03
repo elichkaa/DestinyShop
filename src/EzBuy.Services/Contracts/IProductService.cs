@@ -14,5 +14,7 @@ namespace EzBuy.Services.Contracts
         public List<ProductOnAllPageViewModel> GetAll(int currentPage);
         public Task<int> AddProductAsync(AddProductInputModel input, User user, string imgPath);
         public void EditProduct(string product, EditProductInputModel input, User user);
+
+        public ICollection<ProductOnAllPageViewModel> GetProductsByUserId(string username);
     }
 }
