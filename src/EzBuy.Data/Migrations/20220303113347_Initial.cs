@@ -273,8 +273,7 @@ namespace EzBuy.Data.Migrations
                     CompanyId = table.Column<int>(type: "int", nullable: true),
                     CoverImageId = table.Column<int>(type: "int", nullable: true),
                     ManufacturerId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SaleId = table.Column<int>(type: "int", nullable: true),
                     DateListed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -283,8 +282,8 @@ namespace EzBuy.Data.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Products_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -489,9 +488,9 @@ namespace EzBuy.Data.Migrations
                 column: "SaleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_UserId1",
+                name: "IX_Products_UserId",
                 table: "Products",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductTags_TagId",

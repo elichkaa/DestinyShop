@@ -12,7 +12,7 @@
         <div class="section-title">
             <h3 class="title">Create product</h3>
         </div>
-        <form asp-controller="Productss" asp-action="Add" method="post" enctype="multipart/form-data">
+        <form asp-controller="Products" asp-action="Add" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Name"></label>
                 <input type="text" class="input form-control" placeholder="Product Name" asp-for="Name">
@@ -28,13 +28,12 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group search">
-                <label asp-for="Category"></label>
+                <label asp-for="Category">Choose a category</label>
                 <select asp-for="Category" style={color:white;} class="selectpicker" data-live-search="true">
-                    <option value="">Choose a category</option>
                     @{
                         for (int i = 0; i < categories.Count; i++)
                         {
-                            <option value="@categories[i].Name">
+                            <option value="@categories[i].Id">
                                 @categories[i].Name
                             </option>
                         }
@@ -57,9 +56,12 @@
 </div>
 
 @section scripts {
-      $(document).ready(function(){
+    <script>
+        $(document).ready(function(){
              $('.search select').selectpicker({
     size: false
              });
         })
+    </script>
+      
 }

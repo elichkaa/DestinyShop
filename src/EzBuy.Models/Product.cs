@@ -21,7 +21,7 @@ namespace EzBuy.Models
         public int? ManufacturerId { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public ICollection<ProductTags> Tags { get; set; }
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
         public ICollection<CartProducts> Carts { get; set; }
         public int? SaleId { get; set; }

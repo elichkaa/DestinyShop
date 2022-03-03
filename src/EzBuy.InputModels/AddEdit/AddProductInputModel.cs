@@ -23,7 +23,7 @@ namespace EzBuy.InputModels.AddEdit
 
         [Required]
         [Display(Name = "Product category")]
-        public string Category { get; set; }
+        public int Category { get; set; }
 
         //[Display(Name = "Product cover")]
         //[DataType(DataType.Upload)]
@@ -37,7 +37,5 @@ namespace EzBuy.InputModels.AddEdit
 
         [Display(Name = "Tags")]
         public string Tags { get; set; }
-
-        
     }
 }

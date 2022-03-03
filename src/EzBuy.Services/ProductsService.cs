@@ -31,7 +31,7 @@ namespace EzBuy.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    SellerName=x.User.UserName,
+                    SellerName= x.User.UserName,
                     Description = x.Description,
                     Price = x.Price,
                     PageCount = (int)pageCount,
@@ -57,7 +57,7 @@ namespace EzBuy.Services
                 {
                     context.Manufacturers.Add(new Manufacturer
                     {
-                        Id = GetBiggestId<Manufacturer>() + 1,
+                        //Id = GetBiggestId<Manufacturer>() + 1,
                         Name = manufacturerName
                     });
                     context.SaveChanges();
@@ -72,12 +72,12 @@ namespace EzBuy.Services
                         {
                             context.Tags.Add(new Tag
                             {
-                                Id = GetBiggestId<Tag>() + 1,
+                                //Id = GetBiggestId<Tag>() + 1,
                                 Name = tag
                             });
                         }
-                        context.SaveChanges();
                     }
+                    context.SaveChanges();
                 }
             }
         }
@@ -86,6 +86,12 @@ namespace EzBuy.Services
             var manufacturer = context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
             return manufacturer;
         }
+
+        public Category GetCategory(int categoryId)
+        {
+            return this.context.Categories.FirstOrDefault(x => x.Id == categoryId);
+        }
+
         public ICollection<Tag> FindTags(string tagString)
         {
             var tags = tagString.Split(",").ToList();
@@ -96,15 +102,15 @@ namespace EzBuy.Services
         public int AddProduct(AddProductInputModel input, User user)
         {
             AddProductComponents(input);
-            var productId = this.GetBiggestId<Product>() + 1;
+            //var productId = this.GetBiggestId<Product>() + 1;
             var newProduct = new Product
             {
-                
-                Id = productId,
+                //Id = productId,
                 Name = input.Name,
+                Description = input.Description,
                 Price=input.Price,
                 Manufacturer=FindManufacturer(input.Manufacturer),
-                //Category = input.Category, tdl drop down menu or check or smthng idk
+                Category = GetCategory(input.Category),
                 User = user,
             };
             context.Products.Add(newProduct);
@@ -138,15 +144,15 @@ namespace EzBuy.Services
         {
             return this.context.Set<T>().Any(x => x.Name.ToLower() == name.ToLower());
         }
-        public int GetBiggestId<T>() where T : MainEntity
-        {
-            if (this.context.Set<T>().Any())
-            {
-                return this.context.Set<T>().AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefault().Id;
-            }
+        //public int GetBiggestId<T>() where T : MainEntity
+        //{
+        //    if (this.context.Set<T>().Any())
+        //    {
+        //        return this.context.Set<T>().AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefault().Id;
+        //    }
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
         public void EditProduct(string productName, EditProductInputModel input, User user)
         {
@@ -207,7 +213,7 @@ namespace EzBuy.Services
                     {
                         context.Tags.Add(new Tag
                         {
-                            Id = GetBiggestId<Tag>() + 1,
+                            //Id = GetBiggestId<Tag>() + 1,
                             Name = tag
                         });
                     }

@@ -32,7 +32,7 @@ namespace EzBuy.Tests
                 Tags = "cool,awesome,nice",
                 Price = 20,
                 Description = "Wow so frikin cool",
-                Category = "Gaming"
+                Category = 1
             };
             productsService.AddProductComponents(input);
             var manufacturer = context.Manufacturers.FirstOrDefault(x => x.Name == "Awesome INC");
@@ -103,7 +103,7 @@ namespace EzBuy.Tests
                 Tags = "cool,awesome,nice",
                 Price = 20,
                 Description = "Wow so frikin cool",
-                Category = "Gaming"
+                Category = 1
             };
             this.productsService.AddProduct(input, new User());
             NUnit.Framework.Assert.AreEqual(1, this.context.Products.Count());
@@ -119,7 +119,7 @@ namespace EzBuy.Tests
                 Tags = "cool,awesome,nice",
                 Price = 20,
                 Description = "Wow so frikin cool",
-                Category = "Gaming"
+                Category = 1
             };
             this.productsService.AddProduct(input, new User());
             this.productsService.AddNonexistentTags("incredible,nice,vroom,cool,typical,awesome");
@@ -151,7 +151,7 @@ namespace EzBuy.Tests
                 Tags = "nice",
                 Price = 20,
                 Description = "Wow so frikin cool",
-                Category = "Gaming"
+                Category = 1
             };
             this.productsService.AddNonexistentTags("cool,rad");
             this.productsService.AddProduct(input, new User());
@@ -170,7 +170,7 @@ namespace EzBuy.Tests
                 Tags = "nice,cool,rad",
                 Price = 20,
                 Description = "Wow so frikin cool",
-                Category = "Gaming"
+                Category = 1
             };
             this.productsService.AddProduct(input, new User());
             NUnit.Framework.Assert.AreEqual(3, this.context.ProductTags.Count());

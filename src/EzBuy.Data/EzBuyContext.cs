@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EzBuy.Data
 {
-    public class EzBuyContext : IdentityDbContext<User, IdentityRole, string>
+    public class EzBuyContext : IdentityDbContext<User, IdentityRole<string>, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
 
         public EzBuyContext(DbContextOptions<EzBuyContext> options)
