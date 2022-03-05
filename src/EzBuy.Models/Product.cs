@@ -15,8 +15,6 @@ namespace EzBuy.Models
         public Category Category { get; set; }
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
-        public int? CoverImageId { get; set; }
-        public Image CoverImage { get; set; }
         public ICollection<Image> Images { get; set; }
         public int? ManufacturerId { get; set; }
         public Manufacturer Manufacturer { get; set; }

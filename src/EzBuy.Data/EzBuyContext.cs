@@ -31,11 +31,6 @@ namespace EzBuy.Data
             .HasOne(a => a.Cart)
             .WithOne(b => b.User)
             .HasForeignKey<Cart>(b => b.UserId);
-
-            modelBuilder.Entity<Product>()
-            .HasOne(a => a.CoverImage)
-            .WithOne(b => b.Product)
-            .HasForeignKey<Image>(b => b.ProductId);
         }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProducts> CartProducts { get; set; }

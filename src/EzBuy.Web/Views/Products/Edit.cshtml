@@ -1,3 +1,154 @@
-﻿@{
+﻿@using System.Linq
+@using EzBuy.InputModels.AddEdit
+@using EzBuy.ViewModels.Products
+@model EditProductInputModel
+
+@{
     ViewData["Title"] = "Edit product";
+}
+
+@{
+    FilledProductViewModel filled = ViewData["Filled"] as FilledProductViewModel;
+    var categories = this.ViewBag.Categories;
+}
+
+<div class="col-md-7">
+    <div class="billing-details">
+        <div class="section-title">
+            <h3 class="title">Edit product</h3>
+            <br />
+            <br />
+            <h4 class="title">Change the filled values to edit</h4>
+        </div>
+        <form asp-controller="Products" asp-action="Edit" asp-route-productId="@filled.Id" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="@Model.Name"></label>
+                <input type="text" class="input form-control" value="@filled.Name" asp-for="@Model.Name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Price"></label>
+                <input type="text" class="input form-control" value="@filled.Price" asp-for="@Model.Price">
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Description"></label>
+                <input type="text" class="input form-control" value="@filled.Description" asp-for="@Model.Description">
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group search">
+                <label asp-for="@Model.Category">Choose a category</label>
+                <select asp-for="@Model.Category" style={color:white;} class="selectpicker" data-live-search="true">
+                    @{
+                        for (int i = 0; i < categories.Count; i++)
+                        {
+                            if (@categories[i].Id == @filled.Category)
+                            {
+                                <option value="@categories[i].Id" selected>
+                                    @categories[i].Name
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@categories[i].Id">
+                                    @categories[i].Name
+                                </option>
+                            }
+                        }
+                    }
+                </select>
+                <span asp-validation-for="@Model.Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@filled.Manufacturer">Manufacturer</label>
+                <input type="text" class="input form-control" value="@filled.Manufacturer" asp-for="@filled.Manufacturer" disabled>
+                <span asp-validation-for="@filled.Manufacturer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4>Current tags</h4>
+                @string.Join(" ", @filled.Tags)
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.NewTags"></label>
+                <input asp-for="@Model.NewTags" class="input form-control" placeholder="Enter tags to add separated by comma" />
+                <span asp-validation-for="@Model.NewTags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.RemoveTags"></label>
+                <input asp-for="@Model.RemoveTags" class="input form-control" placeholder="Enter tags to remove separated by comma" />
+                <span asp-validation-for="@Model.RemoveTags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Cover"></label>
+                <input asp-for="@Model.Cover" class="input form-control" />
+                <span asp-validation-for="@Model.Cover" class="text-danger"></span>
+                @if (@filled.Cover != null)
+                {
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="products-tabs">
+                                <div id="tab2" class="tab-pane fade in active">
+                                    <div class="products-slick" data-nav="#slick-nav-2">
+                                        <img src="@filled.Cover.Url" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <h4>Images</h4>
+            <div class="form-group">
+                <h5>Add more images</h5>
+                <input asp-for="@Model.Images" class="input form-control" placeholder="Choose product images" />
+                <span asp-validation-for="@Model.Images" class="text-danger"></span>
+                <label asp-for="@Model.Images"></label>
+                @{
+                    var images = filled.Images.Where(x => x.IsCover == false).Select(x => x.Url).ToList();
+                }
+                @if (images.Count >= 1)
+                {
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="products-tabs">
+                                <div id="tab2" class="tab-pane fade in active">
+                                    <div class="products-slick" data-nav="#slick-nav-2">
+                                        @{
+                                            for (int i = 0; i < @images.Count; i++)
+                                            {
+                                                <div class="product" style="position:relative;">
+                                                    <div class="product-img">
+                                                        <img src="@images[i]" alt="">
+                                                    </div>
+                                                    <a id="deleteModal" data-toggle="modal" data-target="#modal-action-id" class="btn btn-danger" asp-action="Modal" asp-route-path="@images[i]" asp-route-productId="@filled.Id">
+                                                        <i class="fa-solid fa-trash-can"></i> Delete image
+                                                    </a>
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                    <div style="margin-bottom:0px" id="slick-nav-2" class="products-slick-nav"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <h2>Submit</h2>
+            <input class="btn btn-link" type="submit" value="Edit product">
+        </form>
+    </div>
+</div>
+
+
+@section scripts {
+<script>
+        $(document).ready(function(){
+             $('.search select').selectpicker({
+    size: false
+             });
+        })
+</script>
+
 }

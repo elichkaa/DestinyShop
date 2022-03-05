@@ -34,7 +34,14 @@ namespace EzBuy.Services
         {
             var imgName = GetImageName(path);
             var delParams = new DeletionParams(imgName);
+            var dbImage = this.dbContext.Images.Where(x => x.Url == path).FirstOrDefault();
+            if (dbImage != null)
+            {
+                this.dbContext.Images.Remove(dbImage);
+            }
             await cloudinary.DestroyAsync(delParams);
+
+            this.dbContext.SaveChanges();
         }
 
         public async Task DeleteImagesAsync(Cloudinary cloudinary, string[] paths)

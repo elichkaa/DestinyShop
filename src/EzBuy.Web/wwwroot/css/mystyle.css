@@ -22,3 +22,8 @@
 .filter-option{
     color: white;
 }
+
+.AClass {
+    right: 0px;
+    position: absolute;
+}

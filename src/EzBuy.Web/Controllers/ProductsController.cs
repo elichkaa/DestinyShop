@@ -70,10 +70,45 @@ namespace EzBuy.Web.Controllers
 
             return Redirect("/");
         }
-        public async Task<IActionResult> Edit()
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Edit(int productId)
         {
-            
-            return View();
+            var filledModel = await this.productService.GetFilledProductById(productId);
+            ViewData["Filled"] = filledModel;
+            var categories = this.categoriesService.GetAllCategories();
+            this.ViewBag.Categories = categories;
+            return this.View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditProductInputModel input, int productId)
+        {
+            var filledModel = await this.productService.GetFilledProductById(productId);
+            ViewData["Filled"] = filledModel;
+            input.Id = filledModel.Id;
+            var categories = this.categoriesService.GetAllCategories();
+            this.ViewBag.Categories = categories;
+
+            if (!ModelState.IsValid)
+            {
+                this.ModelState.AddModelError(string.Empty, "Invalid arguments");
+                return this.View(input);
+            }
+
+            try
+            {
+                await this.productService.EditProductAsync(input, $"{this.webHostEnvironment.WebRootPath}/img/");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(input);
+            }
+
+            return this.RedirectToAction("Overview");
         }
 
         public async Task<IActionResult> Delete()
@@ -81,7 +116,20 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Overview()
+        public async Task<IActionResult> DeleteImage()
+        {
+            await this.productService.DeleteProductImageByPathAsync(TempData["path"].ToString());
+            return this.RedirectToAction("Edit", "Products", new {productId = TempData["productId"]});
+        }
+
+        public IActionResult Modal(string path, int productId)
+        {
+            TempData["path"] = path;
+            TempData["productId"] = productId;
+            return PartialView("_DeleteCategory");
+        }
+
+        public IActionResult Overview()
         {
             var products = productService.GetProductsByUserId(this.User.Identity.Name);
             return View(products);

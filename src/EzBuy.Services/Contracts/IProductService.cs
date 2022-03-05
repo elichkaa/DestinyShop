@@ -13,8 +13,10 @@ namespace EzBuy.Services.Contracts
     {
         public List<ProductOnAllPageViewModel> GetAll(int currentPage);
         public Task<int> AddProductAsync(AddProductInputModel input, User user, string imgPath);
-        public void EditProduct(string product, EditProductInputModel input, User user);
+        public Task EditProductAsync(EditProductInputModel input, string imgPath);
 
         public ICollection<ProductOnAllPageViewModel> GetProductsByUserId(string username);
+        public Task<FilledProductViewModel> GetFilledProductById(int productId);
+        public Task DeleteProductImageByPathAsync(string path);
     }
 }

@@ -42,7 +42,7 @@ namespace EzBuy.Services
                     Price = x.Price,
                     PageCount = (int)pageCount,
                     CurrentPage = currentPage,
-                    Cover = x.CoverImage.Url
+                    Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
                 }).Skip((currentPage - 1) * productsOnPage).Take(productsOnPage).ToList();
             return products;
         }
@@ -101,7 +101,7 @@ namespace EzBuy.Services
         public ICollection<Tag> FindTags(string tagString)
         {
             var tags = tagString.Split(",").ToList();
-            var tagsCollection = context.Tags.Where(x => tags.Contains(x.Name)).ToList();
+            var tagsCollection = context.Tags.Where(x => !tags.Contains(x.Name)).ToList();
             return tagsCollection;
         }
 
@@ -111,25 +111,23 @@ namespace EzBuy.Services
 
             input.Images.Add(input.Cover);
             var uploadedImages = await UploadPicturesToCloudinary(input.Images, imgPath);
-            var cover = uploadedImages.Last();
+            uploadedImages.Last().IsCover = true;
 
             var newProduct = new Product
             {
-                //Id = productId,
                 Name = input.Name,
                 Description = input.Description,
                 Price = input.Price,
                 Manufacturer = FindManufacturer(input.Manufacturer),
                 Category = GetCategory(input.Category),
                 User = user,
-                CoverImage = cover,
-                Images = uploadedImages.Take(uploadedImages.Count - 1).ToList()
-
+                Images = uploadedImages.ToList()
             };
             context.Products.Add(newProduct);
             context.SaveChanges();
             newProduct = context.Products.FirstOrDefault(x => x.Name == input.Name);
-            AddTagsToProduct(FindTags(input.Tags), newProduct);
+            var tagsToAdd = FindTags(input.Tags);
+            AddTagsToProduct(tagsToAdd, newProduct);
             return newProduct.Id;
         }
 
@@ -174,41 +172,45 @@ namespace EzBuy.Services
         //    return 0;
         //}
 
-        public void EditProduct(string productName, EditProductInputModel input, User user)
+        public async Task EditProductAsync(EditProductInputModel input, string imgPath)
         {
-            if (CheckIfEntityExists<Product>(productName))
-            {
-                var product = context.Products.FirstOrDefault(x => x.Name == productName);
-                if (input.NewName != null)
-                {
-                    product.Name = input.NewName;
-                }
-                if (input.NewPrice != 0)
-                {
-                    product.Price = input.NewPrice;
-                }
-                if (input.NewDescription != null)
-                {
-                    product.Description = input.NewDescription;
-                }
-                context.Update(product);
-                context.SaveChanges();
+            var product = context.Products.FirstOrDefault(x => x.Id == input.Id);
+            product.Name = input.Name != product.Name ? input.Name : product.Name;
+            product.Description = input.Description != product.Description ? input.Description : product.Description;
+            product.Price = input.Price != product.Price ? input.Price : product.Price;
 
-                if (input.NewTags != null)
-                {
-                    AddNonexistentTags(input.NewTags);
-                    AddTagsToProduct(FindTags(input.NewTags), product);
-                }
-                if (input.RemoveTags != null)
-                {
-                    RemoveTags(FindTags(input.RemoveTags), product);
-                }
-            }
-            else
+            if(input.Cover != null)
             {
-                throw new ArgumentException("No product with this name exists", (productName));
+                if(product.Images.Where(x => x.IsCover).FirstOrDefault() != null)
+                {
+                    await this.DeleteProductImageByPathAsync(product.Images.Where(x => x.IsCover).FirstOrDefault().Url);
+                }
+                var uploadedCover = (await UploadPicturesToCloudinary(new List<IFormFile>() { input.Cover }, imgPath)).FirstOrDefault();
+                uploadedCover.IsCover = true;
+                product.Images.Add(uploadedCover);
             }
 
+            if(input.Images != null)
+            {
+                var uploadedImages = await UploadPicturesToCloudinary(input.Images, imgPath);
+                foreach(var image in uploadedImages)
+                {
+                    product.Images.Add(image);
+                }
+            }
+
+            context.Update(product);
+            context.SaveChanges();
+
+            if (input.NewTags != null)
+            {
+                AddNonexistentTags(input.NewTags);
+                AddTagsToProduct(FindTags(input.NewTags), product);
+            }
+            if (input.RemoveTags != null)
+            {
+                RemoveTags(FindTags(input.RemoveTags), product);
+            }
         }
         public void RemoveTags(ICollection<Tag> tags, Product product)
         {
@@ -234,7 +236,6 @@ namespace EzBuy.Services
                 {
                     context.Tags.Add(new Tag
                     {
-                        //Id = GetBiggestId<Tag>() + 1,
                         Name = tag
                     });
                 }
@@ -253,10 +254,36 @@ namespace EzBuy.Services
                     SellerName = x.User.UserName,
                     Description = x.Description,
                     Price = x.Price,
-                    Cover = x.CoverImage.Url,
+                    Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url,
                     Category = x.Category.Name
                 }).ToList();
             return products;
+        }
+
+        public async Task<FilledProductViewModel> GetFilledProductById(int productId)
+        {
+            var result = await this.context
+                .Products
+                .Where(x => x.Id == productId)
+                .Select(x => new FilledProductViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Price = x.Price,
+                    Manufacturer = x.Manufacturer.Name,
+                    Category = x.Category.Id,
+                    Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!,
+                    Images = x.Images,
+                    Tags = string.Join(", ", x.Tags.Select(t => t.Tag.Name))
+                }).FirstOrDefaultAsync();
+
+            return result;
+        }
+
+        public async Task DeleteProductImageByPathAsync(string path)
+        {
+            await this.cloudinaryService.DeleteImageAsync(cloudinary, path);
         }
     }
 }

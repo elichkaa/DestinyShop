@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EzBuy.Data.Migrations
 {
     [DbContext(typeof(EzBuyContext))]
-    [Migration("20220303130845_Initial")]
+    [Migration("20220305091801_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,10 +102,10 @@ namespace EzBuy.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsCover")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("ProductId1")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -113,11 +113,7 @@ namespace EzBuy.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique()
-                        .HasFilter("[ProductId] IS NOT NULL");
-
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -153,9 +149,6 @@ namespace EzBuy.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CoverImageId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateListed")
@@ -514,12 +507,8 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Image", b =>
                 {
                     b.HasOne("EzBuy.Models.Product", "Product")
-                        .WithOne("CoverImage")
-                        .HasForeignKey("EzBuy.Models.Image", "ProductId");
-
-                    b.HasOne("EzBuy.Models.Product", null)
                         .WithMany("Images")
-                        .HasForeignKey("ProductId1");
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
@@ -658,8 +647,6 @@ namespace EzBuy.Data.Migrations
             modelBuilder.Entity("EzBuy.Models.Product", b =>
                 {
                     b.Navigation("Carts");
-
-                    b.Navigation("CoverImage");
 
                     b.Navigation("Images");
 

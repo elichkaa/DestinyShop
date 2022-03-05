@@ -271,7 +271,6 @@ namespace EzBuy.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
-                    CoverImageId = table.Column<int>(type: "int", nullable: true),
                     ManufacturerId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SaleId = table.Column<int>(type: "int", nullable: true),
@@ -340,7 +339,7 @@ namespace EzBuy.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true),
-                    ProductId1 = table.Column<int>(type: "int", nullable: true)
+                    IsCover = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -348,11 +347,6 @@ namespace EzBuy.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Images_Products_ProductId1",
-                        column: x => x.ProductId1,
                         principalTable: "Products",
                         principalColumn: "Id");
                 });
@@ -445,14 +439,7 @@ namespace EzBuy.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Images_ProductId",
                 table: "Images",
-                column: "ProductId",
-                unique: true,
-                filter: "[ProductId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_ProductId1",
-                table: "Images",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

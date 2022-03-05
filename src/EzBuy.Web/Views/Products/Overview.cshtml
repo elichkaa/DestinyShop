@@ -32,7 +32,7 @@
                                                 <h3 class="product-name"><a href="#">@Model[i].Name</a></h3>
                                                 <h4 class="product-price">@Model[i].Price<del class="product-old-price"> @(Model[i].Price + (decimal)9.99)</del></h4>
                                                 <div class="product-btns">
-                                                    <button class="add-to-wishlist"><i class="fa-solid fa-pencil"></i><span class="tooltipp">Edit</span></button>
+                                                    <button type="submit" class="add-to-wishlist" onclick="location.href='@Url.Action("Edit", "Products", new { productId = @Model[i].Id})'"><i class="fa-solid fa-pencil"></i><span class="tooltipp">Edit</span></button>
                                                     <button class="add-to-compare"><i class="fa-solid fa-trash-can"></i><span class="tooltipp">Delete</span></button>
                                                     <button class="quick-view"><i class="fa-solid fa-dragon"></i><span class="tooltipp">View</span></button>
                                                 </div>
