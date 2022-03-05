@@ -136,7 +136,7 @@ namespace EzBuy.Tests
             NUnit.Framework.Assert.AreEqual(tag.Id, 6);
         }
         [Fact]
-        public void AddProductsCreatesConnections()
+        public void AddTagsToProductsCreatesConnections()
         {
             var tags = new List<Tag>();
             tags.Add(new Tag
@@ -184,5 +184,7 @@ namespace EzBuy.Tests
             NUnit.Framework.Assert.AreEqual(0, this.context.Products.Count());
             NUnit.Framework.Assert.AreEqual(0, this.context.ProductTags.Count());
         }
+        
+
     }
 }

@@ -21,14 +21,18 @@ namespace EzBuy.Services
             var cart = new Cart{
                 UserId = user.Id
             };
-            this.context.Add(cart);
+            this.context.Carts.Add(cart);
             this.context.SaveChanges();
         }
-        public void AddProductToCart(Cart cart, Product product)
+        public void AddProductToCart(Product product, Cart cart)
         {
-            if (cart.Products.Count < 5)
+            int count = 0;
+            if (cart.Products != null) { count = cart.Products.Count; }
+            
+            if (count<5)
             {
                 context.CartProducts.Add(new CartProducts(product.Id, cart.Id));
+                context.SaveChanges();
             }
             else
             {
@@ -38,13 +42,17 @@ namespace EzBuy.Services
         public Cart GetCartByUserId(User user)
         {
             var cart=context.Carts.FirstOrDefault(x => x.UserId == user.Id);
+            if(cart == null) throw new ArgumentException("No such user or he doesnt have a cart");
             return cart;
         }
         public void RemoveProductFromCart(Cart cart, Product product)
         {
-            CartProducts connection = (CartProducts)context.CartProducts.Where(x => x.ProductId == product.Id && x.CartId == cart.Id);
-            context.CartProducts.Remove(connection);
-            context.SaveChanges();
+            foreach (var connection in cart.Products)
+            {
+                if(connection.ProductId==product.Id)
+                    context.CartProducts.Remove(connection);
+                context.SaveChanges();
+            }
         }
         public ICollection<Product> GetCartsProducts(Cart cart)
         {
@@ -78,10 +86,11 @@ namespace EzBuy.Services
             this.context.Update(user);
             foreach(var product in GetCartsProducts(user.Cart))
             {
+                product.User.EzBucks+=product.Price;
+                this.context.Update(product.User);
                 RemoveProductFromCart(user.Cart, product);
             }
         }
-
         }
     }
 
