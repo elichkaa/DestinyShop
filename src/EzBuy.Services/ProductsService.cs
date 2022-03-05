@@ -214,10 +214,16 @@ namespace EzBuy.Services
         }
         public void RemoveTags(ICollection<Tag> tags, Product product)
         {
+            //slow but works
             foreach (var tag in tags)
             {
-                ProductTags connection = (ProductTags)context.ProductTags.Where(x => x.ProductId == product.Id && x.TagId == tag.Id);
-                context.ProductTags.Remove(connection);
+                foreach(var connection in product.Tags)
+                {
+                    if (connection.TagId == tag.Id)
+                    {
+                        this.context.Remove(connection);
+                    }
+                }
             }
             context.SaveChanges();
         }
