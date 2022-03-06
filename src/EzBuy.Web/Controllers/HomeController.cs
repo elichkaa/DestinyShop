@@ -38,11 +38,6 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
-        public IActionResult Product()
-        {
-            return View();
-        }
-
         public IActionResult Store()
         {
             return View();

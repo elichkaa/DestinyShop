@@ -304,7 +304,5 @@ namespace EzBuy.Services
                 }).ToList();
             return products;
         }
-
-
     }
 }

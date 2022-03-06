@@ -36,6 +36,12 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Single(int productId)
+        {
+            var product = await this.productService.GetFilledProductById(productId);
+            return View(product);
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Add()
