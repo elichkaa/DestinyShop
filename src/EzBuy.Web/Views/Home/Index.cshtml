@@ -48,6 +48,7 @@
                                 @{
                                     for (int i = 0; i < @Model.Products.Count; i++)
                                     {
+                                        <a asp-controller="Products" asp-action="Single" asp-route-productId="@Model.Products[i].Id">
                                         <div class="product">
                                             <div class="product-img">
                                                 <img src="@Model.Products[i].Cover" alt="">
@@ -61,6 +62,7 @@
                                                 <h4 class="product-price">@Model.Products[i].Price<del class="product-old-price"> @(Model.Products[i].Price + (decimal)9.99)</del></h4>
                                             </div>
                                         </div>
+                                        </a>
                                     }
                                 }
                             </div>

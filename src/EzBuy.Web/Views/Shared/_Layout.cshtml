@@ -32,10 +32,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i>Home</a></li>
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa-solid fa-key"></i> Privacy</a></li>*@
                     
-                    <li><a asp-area="" asp-controller="Home" asp-action="Store">Store</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Store"><i class="fa-solid fa-shop"></i>Store</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Menu</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-bars"></i>Menu</a></li>
                     }
                 </ul>
                 <ul class="header-links pull-right">

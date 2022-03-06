@@ -167,16 +167,16 @@ namespace EzBuy.Services
         //    {
         //        return this.context.Set<T>().AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefault().Id;
         //    }
-
         //    return 0;
         //}
 
         public async Task EditProductAsync(EditProductInputModel input, string imgPath)
         {
-            var product = context.Products.FirstOrDefault(x => x.Id == input.Id);
+            var product = context.Products.Include(x => x.Category).Include(x => x.Images).Include(x => x.Tags).FirstOrDefault(x => x.Id == input.Id);
             product.Name = input.Name != product.Name ? input.Name : product.Name;
             product.Description = input.Description != product.Description ? input.Description : product.Description;
             product.Price = input.Price != product.Price ? input.Price : product.Price;
+            product.Category = product.Category.Id != input.Category ? GetCategory(input.Category) : product.Category;
 
             if (input.Cover != null)
             {
@@ -280,8 +280,10 @@ namespace EzBuy.Services
                     Category = x.Category.Id,
                     Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!,
                     Images = x.Images,
-                    Tags = string.Join(", ", x.Tags.Select(t => t.Tag.Name))
+                    Tags = string.Join(", ", x.Tags.Where(t => t.ProductId == x.Id).Select(t => t.Tag.Name))
                 }).FirstOrDefaultAsync();
+
+            var tags = this.context.ProductTags.Where(x => x.ProductId == productId).ToList();
 
             return result;
         }
