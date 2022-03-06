@@ -1,4 +1,6 @@
-﻿using EzBuy.Web.Models;
+﻿using EzBuy.Services.Contracts;
+using EzBuy.ViewModels.Home;
+using EzBuy.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,26 +9,31 @@ namespace EzBuy.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICategoryService categoryService;
+        private readonly IProductService productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, 
+            ICategoryService categoryService,
+            IProductService productService)
         {
             _logger = logger;
+            this.categoryService = categoryService;
+            this.productService = productService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var categories = this.categoryService.GetCategoriesOnHomePage();
+            var products = this.productService.GetTopProducts();
+            var homePage = new HomePageViewModel
+            {
+                Products = products,
+                Categories = categories,
+            };
+            return View(homePage);
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-        public IActionResult Homepage()
-        {
-            return View();
-        }
-        public IActionResult Checkout()
         {
             return View();
         }
@@ -35,12 +42,8 @@ namespace EzBuy.Web.Controllers
         {
             return View();
         }
-        public IActionResult Store()
-        {
-            return View();
-        }
 
-        public IActionResult Blankpage()
+        public IActionResult Store()
         {
             return View();
         }

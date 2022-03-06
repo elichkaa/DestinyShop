@@ -22,5 +22,28 @@ namespace EzBuy.Services
                     Name = x.Name,
                 }).ToList();
         }
+
+        public List<CategoryOnHomePageViewModel> GetCategoriesOnHomePage()
+        {
+            var categories = new List<CategoryOnHomePageViewModel>();
+            var indexes = new List<int>() { 6,19,29};
+            var images = new List<string>()
+            {
+                "https://res.cloudinary.com/ezbuy/image/upload/v1646551860/clean_qgoqoi.jpg",
+                "https://res.cloudinary.com/ezbuy/image/upload/v1646552139/art3_ubnpdl.png",
+                "https://res.cloudinary.com/ezbuy/image/upload/v1646551884/gaming_psjgqi.webp"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                var category = this.context.Categories.FirstOrDefault(x => x.Id == indexes[i]);
+                categories.Add(new CategoryOnHomePageViewModel
+                {
+                    Name = category.Name,
+                    Id = category.Id,
+                    Image = images[i]
+                });
+            }
+            return categories;
+        }
     }
 }

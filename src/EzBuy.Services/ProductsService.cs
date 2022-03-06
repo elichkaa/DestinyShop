@@ -291,5 +291,19 @@ namespace EzBuy.Services
         {
             await this.cloudinaryService.DeleteImageAsync(cloudinary, path);
         }
+
+        public List<ProductOnAllPageViewModel> GetTopProducts()
+        {
+            var products = this.context.Products.OrderByDescending(x => x.Price)
+                .Select(x => new ProductOnAllPageViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Category = x.Category.Name,
+                    Price = x.Price,
+                    Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
+                }).ToList();
+            return products;
+        }
     }
 }

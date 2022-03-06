@@ -30,22 +30,19 @@
             <div class="container">
                 <ul class="header-links pull-left">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i>Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa-solid fa-key"></i> Privacy</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Homepage"> Homepage</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Checkout"> Checkout</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa-solid fa-key"></i> Privacy</a></li>*@
                     <li><a asp-area="" asp-controller="Home" asp-action="Product"> Product</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Store">Store</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Blankpage">Blank page</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index">Menu</a></li>
                     }
                 </ul>
                 <ul class="header-links pull-right">
                     <partial name="_LoginPartial" />
                 </ul>
             </div>
-        </div>
+        </div>@*
         <div id="header">
             <div class="container">
                 <div class="row">
@@ -128,23 +125,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </header>
-    <nav id="navigation">
-        <div class="container">
-            <div id="responsive-nav">
-                <ul class="main-nav nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Hot Deals</a></li>
-                    <li><a href="#">Categories</a></li>
-                    <li><a href="#">Laptops</a></li>
-                    <li><a href="#">Smartphones</a></li>
-                    <li><a href="#">Cameras</a></li>
-                    <li><a href="#">Accessories</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <div class="container" id="content">
         @RenderBody()
     </div>
@@ -173,7 +155,7 @@
                             <ul class="footer-links">
                                 <li><a href="#">About Us</a></li>
                                 <li><a href="#">Contact Us</a></li>
-                                <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                                @*<li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>*@
                                 <li><a href="#">Orders and Returns</a></li>
                                 <li><a href="#">Terms & Conditions</a></li>
                             </ul>

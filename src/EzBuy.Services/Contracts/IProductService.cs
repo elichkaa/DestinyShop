@@ -18,5 +18,7 @@ namespace EzBuy.Services.Contracts
         public ICollection<ProductOnAllPageViewModel> GetProductsByUserId(string username);
         public Task<FilledProductViewModel> GetFilledProductById(int productId);
         public Task DeleteProductImageByPathAsync(string path);
+
+        public List<ProductOnAllPageViewModel> GetTopProducts();
     }
 }
