@@ -20,5 +20,7 @@ namespace EzBuy.Services.Contracts
         public Task DeleteProductImageByPathAsync(string path);
 
         public List<ProductOnAllPageViewModel> GetTopProducts();
+
+        public Task DeleteProduct(int productId);
     }
 }

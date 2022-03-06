@@ -111,9 +111,12 @@ namespace EzBuy.Web.Controllers
             return this.RedirectToAction("Overview");
         }
 
+
         public async Task<IActionResult> Delete()
         {
-            return View();
+            var id = TempData["productId"];
+            await this.productService.DeleteProduct((int)id);
+            return this.RedirectToAction("Overview");
         }
 
         public async Task<IActionResult> DeleteImage()
@@ -122,11 +125,17 @@ namespace EzBuy.Web.Controllers
             return this.RedirectToAction("Edit", "Products", new {productId = TempData["productId"]});
         }
 
-        public IActionResult Modal(string path, int productId)
+        public IActionResult ProductModal(int productId)
+        {
+            TempData["productId"] = productId;
+            return PartialView("_DeleteProduct");
+        }
+
+        public IActionResult ImageModal(string path, int productId)
         {
             TempData["path"] = path;
             TempData["productId"] = productId;
-            return PartialView("_DeleteCategory");
+            return PartialView("_DeleteImage");
         }
 
         public IActionResult Overview()

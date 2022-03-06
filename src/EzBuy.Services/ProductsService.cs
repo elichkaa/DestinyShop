@@ -145,23 +145,22 @@ namespace EzBuy.Services
             }
             context.SaveChanges();
         }
-        public void DeleteProduct(string productName)
+        public async Task DeleteProduct(int productId)
         {
-            var product = context.Products.FirstOrDefault(x => x.Name == productName);
-            if (product != null)
+            var product = context.Products.Include(x => x.Images).FirstOrDefault(x => x.Id == productId);
+            var productImages = product.Images.ToList();
+            foreach (var image in productImages)
             {
-                context.Products.Remove(product);
-                context.SaveChanges();
+                await this.DeleteProductImageByPathAsync(image.Url);
             }
-            else
-            {
-                throw new ArgumentException("No product with this name exists", (productName));
-            }
+            context.Products.Remove(product);
+            context.SaveChanges();
         }
         public bool CheckIfEntityExists<T>(string name) where T : EntityName
         {
             return this.context.Set<T>().Any(x => x.Name.ToLower() == name.ToLower());
         }
+
         //public int GetBiggestId<T>() where T : MainEntity
         //{
         //    if (this.context.Set<T>().Any())
@@ -179,9 +178,9 @@ namespace EzBuy.Services
             product.Description = input.Description != product.Description ? input.Description : product.Description;
             product.Price = input.Price != product.Price ? input.Price : product.Price;
 
-            if(input.Cover != null)
+            if (input.Cover != null)
             {
-                if(product.Images.Where(x => x.IsCover).FirstOrDefault() != null)
+                if (product.Images.Where(x => x.IsCover).FirstOrDefault() != null)
                 {
                     await this.DeleteProductImageByPathAsync(product.Images.Where(x => x.IsCover).FirstOrDefault().Url);
                 }
@@ -190,10 +189,10 @@ namespace EzBuy.Services
                 product.Images.Add(uploadedCover);
             }
 
-            if(input.Images != null)
+            if (input.Images != null)
             {
                 var uploadedImages = await UploadPicturesToCloudinary(input.Images, imgPath);
-                foreach(var image in uploadedImages)
+                foreach (var image in uploadedImages)
                 {
                     product.Images.Add(image);
                 }
@@ -217,7 +216,7 @@ namespace EzBuy.Services
             //slow but works
             foreach (var tag in tags)
             {
-                foreach(var connection in product.Tags)
+                foreach (var connection in product.Tags)
                 {
                     if (connection.TagId == tag.Id)
                     {
@@ -305,5 +304,7 @@ namespace EzBuy.Services
                 }).ToList();
             return products;
         }
+
+
     }
 }
