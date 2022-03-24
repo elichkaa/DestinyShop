@@ -12,7 +12,7 @@ using CloudinaryDotNet;
 
 namespace EzBuy.Tests
 {
-    public class ProductsServiceTests
+    public class ProductsServiceTests:IClassFixture<Cloudinary>
     {
         private readonly EzBuyContext context;
         private readonly ProductsService productsService;
@@ -85,7 +85,7 @@ namespace EzBuy.Tests
             this.context.Tags.Add(new Tag
             {
                 Id = 1,
-                Name = "dope"
+                Name = "dope",
             });
             this.context.SaveChanges();
             this.context.Tags.Add(new Tag
