@@ -1,6 +1,7 @@
 ﻿using EzBuy.Data;
 using EzBuy.Models;
 using EzBuy.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,9 +78,11 @@ namespace EzBuy.Services
             return transaction;
         }
 
-        public User GetUser()
+        public User GetUser(Task<User> currentUser)
         {
-            throw new NotImplementedException();
+            var userName = currentUser.Result.UserName;
+            var user=this.context.Users.FirstOrDefault(p => p.UserName == userName);
+            return user;
         }
 
         public Dictionary<string, string> ToDictionary(string response)

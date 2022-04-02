@@ -17,6 +17,6 @@ namespace EzBuy.Services.Contracts
         Transaction GetTransaction(string payRequestId);
         string GetMd5Hash(Dictionary<string, string> data, string encryptionKey);
         bool VerifyMd5Hash(Dictionary<string, string> data, string encryptionKey, string hash);
-        User GetUser();
+        User GetUser(Task<User> currentUser);
     }
 }

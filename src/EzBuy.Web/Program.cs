@@ -5,6 +5,7 @@ using EzBuy.Services;
 using EzBuy.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<EzBuyContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
 builder.Services.AddDefaultIdentity<User>(options =>
 {
@@ -29,6 +31,11 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddTransient<IProductService, ProductsService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.
+    Services.
+    AddSingleton
+    <IConfiguration>
+    (builder.Configuration);
 builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
 Account account = new Account(
                 builder.Configuration.GetSection("Cloudinary:cloud").Value,
