@@ -36,6 +36,7 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li><a asp-area="" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-bars"></i>Menu</a></li>
+                        <li><a asp-area="" asp-controller="Package" asp-action="Index"><i class="fa-solid fa-bars"></i>Packages</a></li>
                     }
                 </ul>
                 <ul class="header-links pull-right">

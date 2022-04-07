@@ -1,0 +1,19 @@
+﻿@model PaymentModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div>
+    <form action="/Package/Order/@Model.PackageName" method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_51Km1ZLBLLy6PDMrF9WpTgiMiSxzNw6iJkeCGpBWCtp0UZUH1ZespvN79jOzGhtuB6nrHbs1VB5eb2dqkh0eV8ZTB00NKYZuSrb"
+                data-amount="@((long)(Model.Amount*100))"
+                data-name="@Model.Company"
+                data-description="@Model.Description"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="en"
+                data-zip-code="true"
+                data-label="@Model.Label">
+        </script>
+    </form>
+</div>

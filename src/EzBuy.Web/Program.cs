@@ -5,12 +5,13 @@ using EzBuy.Services;
 using EzBuy.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSingleton<ChargeService>(new ChargeService());
 // Add services to the container.
-
+StripeConfiguration.SetApiKey(builder.Configuration["Stripe:TestSecretKey"]);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EzBuyContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
@@ -37,7 +38,7 @@ builder.
     <IConfiguration>
     (builder.Configuration);
 builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
-Account account = new Account(
+CloudinaryDotNet.Account account = new CloudinaryDotNet.Account(
                 builder.Configuration.GetSection("Cloudinary:cloud").Value,
                 builder.Configuration.GetSection("Cloudinary:apiKey").Value,
                 builder.Configuration.GetSection("Cloudinary:apiSecret").Value);
