@@ -43,7 +43,7 @@ namespace EzBuy.Data
         public DbSet<ProductTags> ProductTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Sale> Sales { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        
 
         public DbSet<IdentityRole> IdentityRoles { get; set; }
     }
