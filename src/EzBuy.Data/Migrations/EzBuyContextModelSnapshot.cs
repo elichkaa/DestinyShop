@@ -244,41 +244,6 @@ namespace EzBuy.Data.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("EzBuy.Models.Transaction", b =>
-                {
-                    b.Property<Guid>("TRANSACTION_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AMOUNT")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CUSTOMER_EMAIL_ADDRESS")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DATE")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PAY_REQUEST_ID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("REFERENCE")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RESULT_CODE")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RESULT_DESC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TRANSACTION_STATUS")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TRANSACTION_ID");
-
-                    b.ToTable("Transactions");
-                });
-
             modelBuilder.Entity("EzBuy.Models.User", b =>
                 {
                     b.Property<string>("Id")
