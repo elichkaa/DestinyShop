@@ -19,6 +19,7 @@ namespace EzBuy.Web.Controllers
     {
         IConfiguration configuration { get; set; }
         UserManager<User> userManager { get; set; }
+        string responseContent { get; set; }
         public PayController(IConfiguration configuration, UserManager<User> userManager)
         {
             this.configuration = configuration;
@@ -68,7 +69,7 @@ namespace EzBuy.Web.Controllers
             // if the request did not succeed, this line will make the program crash
             response.EnsureSuccessStatusCode();
 
-            string responseContent = await response.Content.ReadAsStringAsync();
+            responseContent = await response.Content.ReadAsStringAsync();
 
             Dictionary<string, string> results = _payment.ToDictionary(responseContent);
 
@@ -112,7 +113,7 @@ namespace EzBuy.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CompletePayment()
         {
-            string responseContent = Request.Params.ToString();
+            //string responseContent = Request.Params.ToString();
             Dictionary<string, string> results = _payment.ToDictionary(responseContent);
 
             Transaction transaction = _payment.GetTransaction(results["PAY_REQUEST_ID"]);

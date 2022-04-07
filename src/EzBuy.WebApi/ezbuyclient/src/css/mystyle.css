@@ -1,0 +1,28 @@
+#content {
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+#modalconf {
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+.btn-default {
+	background-color: #d10024;
+	color: #fff;
+}
+
+.btn-link {
+	color: white;
+	background-color: #d10024;
+}
+
+.filter-option {
+	color: white;
+}
+
+.AClass {
+	right: 0px;
+	position: absolute;
+}

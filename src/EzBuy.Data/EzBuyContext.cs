@@ -32,6 +32,7 @@ namespace EzBuy.Data
             .WithOne(b => b.User)
             .HasForeignKey<Cart>(b => b.UserId);
         }
+
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProducts> CartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -43,5 +44,7 @@ namespace EzBuy.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+
+        public DbSet<IdentityRole> IdentityRoles { get; set; }
     }
 }
