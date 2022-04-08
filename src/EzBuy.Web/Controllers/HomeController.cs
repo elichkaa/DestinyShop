@@ -41,7 +41,8 @@ namespace EzBuy.Web.Controllers
 
         public IActionResult Store()
         {
-            return View();
+            var topProducts = this.productService.GetTopProducts();
+            return View(topProducts);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
