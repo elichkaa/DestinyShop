@@ -1,0 +1,14 @@
+﻿@using EzBuy.Models
+@using Stripe
+@model List<Charge>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@{
+    var usr = await UserManager.GetUserAsync(User);
+    var email = usr?.Email;
+}
+@foreach(var charge in Model){
+    if (email==charge.ReceiptEmail) {
+        <h1>[@charge.Created]-@("**** **** ****"+charge.PaymentMethodDetails.Card.Last4)-@(string.Format("{0:f2}$",(charge.Amount/100.0M)))</h1>
+    }
+}
