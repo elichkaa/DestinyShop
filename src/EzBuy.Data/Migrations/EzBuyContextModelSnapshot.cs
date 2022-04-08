@@ -167,6 +167,9 @@ namespace EzBuy.Data.Migrations
                     b.Property<int?>("SaleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SaleOffPrecentage")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 

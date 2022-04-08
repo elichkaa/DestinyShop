@@ -23,6 +23,7 @@ namespace EzBuy.Models
         public User User { get; set; }
         public ICollection<CartProducts> Carts { get; set; }
         public int? SaleId { get; set; }
+        public int? SaleOffPrecentage { get; set; }
         public Sale Sale{ get; set; }// probably shoud be many to many
         public DateTime? DateListed { get; set; }
     }
