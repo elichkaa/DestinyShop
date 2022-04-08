@@ -13,6 +13,7 @@ namespace EzBuy.Models
         public bool Seasonal { get; set; }
         public bool Company { get; set; }
         public bool Categorial { get; set; }
+        public string CategoryName{ get; set; }
         public ICollection<Product> Products { get; set; }// probably shoud be many to many
 }
 }
