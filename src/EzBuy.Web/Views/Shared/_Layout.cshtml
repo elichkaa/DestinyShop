@@ -43,9 +43,14 @@
                     }
                 </ul>
                 <ul class="header-links pull-right">
-                     <partial name="_LoginPartial" />
-                    <li ><a data-toggle="modal" data-backdrop="false" data-target="#modal-cart" asp-controller="Cart" asp-action="CartModal">Cart</a></li>
+                    <li>
+                        <a data-toggle="modal" data-backdrop="false" data-target="#modal-cart" asp-controller="Cart" asp-action="CartModal">Cart</a>
+                    </li>
                 </ul>
+                <ul class="header-links pull-right">
+                     <partial name="_LoginPartial" />
+                </ul>
+               
             </div>
         </div>@*
         <div id="header">
