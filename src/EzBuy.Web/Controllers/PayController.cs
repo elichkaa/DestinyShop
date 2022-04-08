@@ -116,7 +116,7 @@ namespace EzBuy.Web.Controllers
             //string responseContent = Request.Params.ToString();
             Dictionary<string, string> results = _payment.ToDictionary(responseContent);
 
-            Transaction transaction = _payment.GetTransaction(results["PAY_REQUEST_ID"]);
+            var transaction = _payment.GetTransaction(results["PAY_REQUEST_ID"]);
 
             if (transaction == null)
             {

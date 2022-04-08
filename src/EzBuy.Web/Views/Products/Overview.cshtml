@@ -34,7 +34,7 @@
                                                 <div class="product-btns">
                                                     <button type="submit" class="add-to-wishlist" onclick="location.href='@Url.Action("Edit", "Products", new { productId = @Model[i].Id})'"><i class="fa-solid fa-pencil"></i><span class="tooltipp">Edit</span></button>
                                                     
-                                                    <a id="deleteModal" data-toggle="modal" data-target="#modal-action-id" asp-action="ProductModal" asp-route-productId="@Model[i].Id">
+                                                    <a id="deleteModal" data-toggle="modal" data-target="#modal-product" asp-action="ProductModal" asp-route-productId="@Model[i].Id">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </a>
 

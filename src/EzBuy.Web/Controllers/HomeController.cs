@@ -2,6 +2,7 @@
 using EzBuy.ViewModels.Home;
 using EzBuy.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 
 namespace EzBuy.Web.Controllers
@@ -11,7 +12,7 @@ namespace EzBuy.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryService categoryService;
         private readonly IProductService productService;
-
+        
         public HomeController(ILogger<HomeController> logger, 
             ICategoryService categoryService,
             IProductService productService)

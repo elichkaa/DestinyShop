@@ -1,8 +1,16 @@
 ﻿@using EzBuy.ViewModels.Home
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor 
 @{
     ViewData["Title"] = "Home Page";
 }
 @model HomePageViewModel
+
+<div class="text-center">
+<p><b>Name:</b> @httpContextAccessor.HttpContext.Session.GetString("_Name");<b>Age:
+
+</b> @httpContextAccessor.HttpContext.Session.GetInt32("_Age").ToString()</p>
+</div>
 
 <!-- SECTION -->
 <div class="section">

@@ -1,5 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using EzBuy.ViewModels.Cart
+@using Microsoft.AspNetCore.Identity
 @using EzBuy.Models
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor 
 @inject SignInManager<User> SignInManager
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +42,8 @@
                     }
                 </ul>
                 <ul class="header-links pull-right">
-                    <partial name="_LoginPartial" />
+                     <partial name="_LoginPartial" />
+                    <li ><a data-toggle="modal" data-backdrop="false" data-target="#modal-cart" asp-controller="Cart" asp-action="CartModal">Cart</a></li>
                 </ul>
             </div>
         </div>@*
@@ -180,6 +184,7 @@
     </footer>
     @Html.Partial("_ImageModal")
     @Html.Partial("_ProductModal")
+    @Html.Partial("_CartModal", new CartViewModel())
     <!-- SCRIPTS -->
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
