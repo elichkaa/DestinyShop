@@ -32,7 +32,6 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddTransient<IProductService, ProductsService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.
     Services.
     AddSingleton
