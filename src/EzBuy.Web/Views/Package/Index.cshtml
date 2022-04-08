@@ -1,0 +1,8 @@
+﻿@model List<string>
+@foreach (var package in Model){
+    <div class ="d-flex justify-content-between">
+        <h1>@package</h1>
+        <a class="btn btn-info" asp-controller="Package" asp-action="Order" asp-route-id="@package">Order</a>
+    </div>
+    
+}
