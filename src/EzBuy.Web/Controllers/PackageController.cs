@@ -1,4 +1,5 @@
-﻿using EzBuy.Web.Models;
+﻿using EzBuy.Services.Contracts;
+using EzBuy.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 
@@ -9,9 +10,11 @@ namespace EzBuy.Web.Controllers
         private static List<string> packages = new List<string>() { "Small", "Medium", "Large" };
         private static Dictionary<string, PaymentModel> models = new Dictionary<string, PaymentModel>();
         private readonly ChargeService chargeService;
-        public PackageController(ChargeService chargeService)
+        private readonly IAddEzBucks addEzBucksService;
+        public PackageController(ChargeService chargeService, IAddEzBucks addEzBucksService)
         {
             this.chargeService = chargeService;
+            this.addEzBucksService = addEzBucksService;
             if (models.Count == 0)
             {
                 models.Add("Small", new PaymentModel
@@ -66,6 +69,7 @@ namespace EzBuy.Web.Controllers
                 Metadata = Metadata
             };
             var charge=this.chargeService.Create(options);
+            this.addEzBucksService.AddEzBucksToUser(options.ReceiptEmail, models[id].PackageName);
             return Redirect("/");
         }
     }

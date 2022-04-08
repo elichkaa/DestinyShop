@@ -10,6 +10,8 @@ using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ChargeService>(new ChargeService());
+builder.Services.AddTransient<IAddEzBucks, AddEzBucks>();
+
 // Add services to the container.
 StripeConfiguration.SetApiKey(builder.Configuration["Stripe:TestSecretKey"]);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
