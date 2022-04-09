@@ -6,5 +6,7 @@ namespace EzBuy.Services.Contracts
     {
         public List<CategoryOnAddFormViewModel> GetAllCategories();
         public List<CategoryOnHomePageViewModel> GetCategoriesOnHomePage();
+
+        public List<CategoryOnShopPageViewModel> GetCategoriesOnShopPage();
     }
 }

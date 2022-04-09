@@ -45,5 +45,16 @@ namespace EzBuy.Services
             }
             return categories;
         }
+
+        public List<CategoryOnShopPageViewModel> GetCategoriesOnShopPage()
+        {
+            return this.context.Categories.
+                Select(x => new CategoryOnShopPageViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ProductCount = x.Products == null ? 0 : x.Products.Count()
+                }).ToList();
+        }
     }
 }
