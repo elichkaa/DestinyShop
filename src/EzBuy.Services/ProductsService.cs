@@ -1,9 +1,11 @@
 ﻿using CloudinaryDotNet;
 using EzBuy.Data;
 using EzBuy.InputModels.AddEdit;
+using EzBuy.InputModels.Search;
 using EzBuy.Models;
 using EzBuy.Services.Contracts;
 using EzBuy.ViewModels.Products;
+using EzBuy.ViewModels.Search;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -320,6 +322,31 @@ namespace EzBuy.Services
                     Price = x.Price,
                     Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
                 }).ToList();
+            return products;
+        }
+        public ICollection<SearchProductViewModel> SearchProducts(SearchProductInputModel input)
+        {
+            if (input.Name == null)
+            {
+                throw new ArgumentException("Product name cannot be null");
+            }
+            var products = context
+                .Products
+                .Where(x => x.Name.ToLower().Contains(input.Name.ToLower()))
+                .Select(x => new SearchProductViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SellerName = x.User.UserName,
+                    ReleaseDate = ((DateTime)x.DateListed).ToString("MM/dd/yyyy"),
+                })
+                .ToList();
+
+            if (input.SellerName != null)
+            {
+                products= products.Where(x => x.SellerName.ToLower().Contains(input.SellerName.ToLower())).ToList();
+            }
+
             return products;
         }
     }

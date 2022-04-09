@@ -1,0 +1,42 @@
+﻿@using EzBuy.ViewModels.Search
+@model ICollection<SearchProductViewModel>
+@{
+    ViewData["Title"] = "Search results";
+}
+@if (Model.Any())
+{
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Release Date</th>
+                    <th scope="col">Seller Name</th>
+                    <th scope="col">Go to product</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < @Model.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@Model.ToList()[i].Name</td>
+                        <td>@Model.ToList()[i].ReleaseDate</td>
+                        <td>@Model.ToList()[i].SellerName</td>
+                        <td>
+                            <a asp-controller="Products" asp-action="Single" asp-route-id="@Model.ToList()[i].Id">
+                                
+                                Go to product page
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h1>No results found.</h1>
+}

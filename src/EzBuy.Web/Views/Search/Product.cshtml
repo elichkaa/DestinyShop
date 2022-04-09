@@ -1,0 +1,32 @@
+﻿@using EzBuy.InputModels.Search
+@model SearchProductInputModel
+@{
+    ViewData["Title"] = "Search products";
+}
+<!--https://codepen.io/Izaias/pen/PPJmQe-->
+<section class="background-form">
+    <div>
+        <form class="container-form user-form" asp-action="ProductResults" method="get">
+            <span class="form-input">
+                <input type="text" class="input__field" id="input-1" asp-for="@Model.Name" />
+                <label for="input-1" class="input__label">
+                    <span class="input__label-content">Product Name</span>
+                </label>
+            </span>
+            <span class="form-input">
+                <input type="text" class="input__field" id="input-2" asp-for="@Model.SellerName" />
+                <label for="input-2" class="input__label">
+                    <span class="input__label-content">Seller Name</span>
+                </label>
+            </span>
+            @if (this.TempData["ModelState"] != null)
+            {
+                <span class="input message">
+                    <span class="text-danger">@this.TempData["ModelState"]</span>
+                </span>
+            }
+            <input style="display: block;" type="submit" id="send-button" value="Search">
+
+        </form>
+    </div>
+</section>

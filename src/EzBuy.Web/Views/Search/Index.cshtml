@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Search menu - EzBuy";
+}
+
+    <div class="pi-content">
+        <div class="container">
+            <div class="row">
+                <h1 class="text-white">Choose a category to search in:</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="margin-bottom: 75px">
+    <div class="container">
+        <div class="row p-2">
+            <a asp-controller="Search" asp-action="Product">
+                <div class="card col" style="width: 24rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Product</h5>
+                        <p class="card-text">Filter and search the product.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
