@@ -1,6 +1,8 @@
 ﻿using EzBuy.InputModels.AddEdit;
+using EzBuy.InputModels.Search;
 using EzBuy.Models;
 using EzBuy.ViewModels.Products;
+using EzBuy.ViewModels.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +24,6 @@ namespace EzBuy.Services.Contracts
         public List<ProductOnAllPageViewModel> GetTopProducts();
 
         public Task DeleteProduct(int productId);
+        public ICollection<SearchProductViewModel> SearchProducts(SearchProductInputModel input);
     }
 }
