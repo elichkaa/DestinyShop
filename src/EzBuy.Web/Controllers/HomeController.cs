@@ -38,14 +38,16 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
-        public IActionResult Store(int id)
+        public IActionResult Store(string[] categories, int id = 1)
         {
-            var topProducts = this.productService.GetTopProducts();
-            if(topProducts == null || topProducts.Count == 0)
+            var products = this.productService.GetAll(id, categories);
+            if(products == null || products.Count == 0)
             {
                 return this.RedirectToAction("Error", "Home", new { message = "No products available in shop" });
             }
-            return View(topProducts);
+            ViewData["Categories"] = this.categoryService.GetCategoriesOnShopPage();
+
+            return View(products);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

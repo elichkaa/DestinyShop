@@ -17,7 +17,7 @@ namespace EzBuy.Services
         private readonly EzBuyContext context;
         private readonly ICloudinaryService cloudinaryService;
         private readonly Cloudinary cloudinary;
-        private const int productsOnPage = 6;
+        private const int productsOnPage = 9;
         public ProductsService(EzBuyContext context, ICloudinaryService cloudinaryService, Cloudinary cloudinary)
         {
             this.context = context;
@@ -25,14 +25,17 @@ namespace EzBuy.Services
             this.cloudinary = cloudinary;
         }
 
-        public List<ProductOnAllPageViewModel> GetAll(int currentPage)
+        public List<ProductOnAllPageViewModel> GetAll(int currentPage, string[] categories)
         {
             var pageCount = this.GetMaxPages();
             if (currentPage <= 0 || currentPage > pageCount)
             {
                 return null;
             }
-            var products = context.
+            var products = new List<ProductOnAllPageViewModel>();
+            if (categories == null || categories.Length == 0)
+            {
+                products = context.
                 Products.
                 OrderByDescending(x => x.DateListed).
                 Select(x => new ProductOnAllPageViewModel
@@ -42,11 +45,24 @@ namespace EzBuy.Services
                     SellerName = x.User.UserName,
                     Description = x.Description,
                     Price = x.Price,
+                    Category = x.Category.Name,
                     PageCount = (int)pageCount,
                     CurrentPage = currentPage,
                     Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
                 }).Skip((currentPage - 1) * productsOnPage).Take(productsOnPage).ToList();
-            return products;
+
+                return products;
+            }
+            else
+            {
+                var filtered = new List<ProductOnAllPageViewModel>();
+                foreach (var category in categories)
+                {
+                    filtered.Add(products.Where(x => x.Category == category).FirstOrDefault());
+                }
+                return filtered;
+            }
+            
         }
 
         public decimal GetMaxPages() => Math.Ceiling((decimal)context.Products.Count() / productsOnPage);
