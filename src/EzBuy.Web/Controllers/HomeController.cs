@@ -2,7 +2,6 @@
 using EzBuy.ViewModels.Home;
 using EzBuy.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 
 namespace EzBuy.Web.Controllers
@@ -39,16 +38,20 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
-        public IActionResult Store()
+        public IActionResult Store(int id)
         {
             var topProducts = this.productService.GetTopProducts();
+            if(topProducts == null || topProducts.Count == 0)
+            {
+                return this.RedirectToAction("Error", "Home", new { message = "No products available in shop" });
+            }
             return View(topProducts);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string message)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Description = message });
         }
     }
 }

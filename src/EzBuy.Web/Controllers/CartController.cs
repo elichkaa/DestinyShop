@@ -23,7 +23,7 @@ namespace EzBuy.Web.Controllers
         }
         public async Task<IActionResult> DisplayCart()
         {
-            return this.Redirect("/");
+            return this.RedirectToAction("Index", "Package");
         }
 
 

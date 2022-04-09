@@ -28,6 +28,7 @@
 </head>
 
 <body>
+<div class="content">
     <header>
         <div id="top-header">
             <div class="container">
@@ -137,7 +138,7 @@
     <div class="container" id="content">
         @RenderBody()
     </div>
-    <footer id="footer">
+    <footer id="footer" class="footer fixed-bottom">
         <div class="section">
             <div class="container">
                 <div class="row">
@@ -185,6 +186,8 @@
             </div>
         </div>
     </footer>
+    
+        </div>
     @Html.Partial("_ImageModal")
     @Html.Partial("_ProductModal")
     @Html.Partial("_CartModal", new CartViewModel())
