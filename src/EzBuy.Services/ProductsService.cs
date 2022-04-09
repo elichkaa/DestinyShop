@@ -103,7 +103,7 @@ namespace EzBuy.Services
         public ICollection<Tag> FindTags(string tagString)
         {
             var tags = tagString.Split(",").ToList();
-            var tagsCollection = context.Tags.Where(x => !tags.Contains(x.Name)).ToList();
+            var tagsCollection = context.Tags.Where(x => tags.Contains(x.Name)).ToList();
             return tagsCollection;
         }
 
