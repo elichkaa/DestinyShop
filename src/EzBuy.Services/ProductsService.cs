@@ -138,6 +138,7 @@ namespace EzBuy.Services
                 Price = input.Price,
                 Manufacturer = FindManufacturer(input.Manufacturer),
                 Category = GetCategory(input.Category),
+                DateListed=DateTime.Now,
                 User = user,
                 Images = uploadedImages.ToList()
             };
