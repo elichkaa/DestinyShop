@@ -39,9 +39,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Store"><i class="fa-solid fa-shop"></i>Store</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-bars"></i>Menu</a></li>
+                        <li><a asp-area="" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-bars"></i>Products</a></li>
                         <li><a asp-area="" asp-controller="Package" asp-action="Index"><i class="fa-solid fa-dollar-sign"></i>Packages</a></li>
-                        <li><a asp-area="" asp-controller="Transaction" asp-action="Index"><i class="fa-solid fa-bars"></i>MyTransactions</a></li>
+                        <li><a asp-area="" asp-controller="Transaction" asp-action="Index"><i class="fa-solid fa-comments-dollar"></i>MyTransactions</a></li>
                     }
                 </ul>
                 <ul class="header-links pull-right">

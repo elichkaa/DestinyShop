@@ -100,6 +100,7 @@ namespace EzBuy.Web.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    this.ErrorMessage = "Invalid login attempt. Check password/email.";
                     return Page();
                 }
             }
