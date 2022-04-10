@@ -287,7 +287,7 @@ namespace EzBuy.Services
                     Category = x.Category.Id,
                     Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!,
                     Images = x.Images,
-                    Tags = string.Join(", ", x.Tags.Where(t => t.ProductId == x.Id).Select(t => t.Tag.Name))
+                    Tags = string.Join(", ", x.Tags.Where(t => t.ProductId == productId).Select(t => t.Tag.Name))
                 }).FirstOrDefaultAsync();
 
             var tags = this.context.ProductTags.Where(x => x.ProductId == productId).ToList();
@@ -311,7 +311,7 @@ namespace EzBuy.Services
                     Price = x.Price,
                     Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
                 }).ToList();
-            return products;
+            return products.Take(4).ToList();
         }
         public ICollection<SearchProductViewModel> SearchProducts(SearchProductInputModel input)
         {

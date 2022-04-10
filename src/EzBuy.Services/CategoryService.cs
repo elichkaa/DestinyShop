@@ -31,7 +31,7 @@ namespace EzBuy.Services
             {
                 "https://res.cloudinary.com/ezbuy/image/upload/v1646551860/clean_qgoqoi.jpg",
                 "https://res.cloudinary.com/ezbuy/image/upload/v1646552139/art3_ubnpdl.png",
-                "https://res.cloudinary.com/ezbuy/image/upload/v1646551884/gaming_psjgqi.webp"
+                "https://res.cloudinary.com/ezbuy/image/upload/v1649584595/garfield1.jpg"
             };
             for (int i = 0; i < 3; i++)
             {

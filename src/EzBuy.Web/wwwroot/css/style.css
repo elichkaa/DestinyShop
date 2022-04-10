@@ -55,6 +55,10 @@ Table OF Contents
 	Typography
 \*----------------------------*/
 
+.slick-track{
+    margin: 0;
+}
+
 html {
     height: 100%;
 }
