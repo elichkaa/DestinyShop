@@ -107,7 +107,7 @@ namespace EzBuy.Services
         public ICollection<Tag> FindTags(string tagString)
         {
             var tags = tagString.Split(",").ToList();
-            var tagsCollection = context.Tags.Where(x => !tags.Contains(x.Name)).ToList();
+            var tagsCollection = context.Tags.Where(x => tags.Contains(x.Name)).ToList();
             return tagsCollection;
         }
 
@@ -126,6 +126,7 @@ namespace EzBuy.Services
                 Price = input.Price,
                 Manufacturer = FindManufacturer(input.Manufacturer),
                 Category = GetCategory(input.Category),
+                DateListed=DateTime.Now,
                 User = user,
                 Images = uploadedImages.ToList()
             };
@@ -327,6 +328,7 @@ namespace EzBuy.Services
                     Name = x.Name,
                     SellerName = x.User.UserName,
                     ReleaseDate = ((DateTime)x.DateListed).ToString("MM/dd/yyyy"),
+                    Category = x.Category.Name,
                 })
                 .ToList();
 
@@ -334,6 +336,74 @@ namespace EzBuy.Services
             {
                 products = products.Where(x => x.SellerName.ToLower().Contains(input.SellerName.ToLower())).ToList();
             }
+            if (input.Category != null)
+            {
+                products = products.Where(x => x.Category.ToLower().Contains(input.Category.ToLower())).ToList();
+            }
+            
+            //List< ProductOnAllPageViewModel> products=new List< ProductOnAllPageViewModel>();
+            //if (input.Name != null)
+            //{
+                
+
+            //         products = context
+            //        .Products
+            //        .Where(x => x.Name.ToLower().Contains(input.Name.ToLower()))
+            //        .Select(x => new SearchProductViewModel
+            //        {
+            //            Id = x.Id,
+            //            Name = x.Name,
+            //            SellerName = x.User.UserName,
+            //            ReleaseDate = ((DateTime)x.DateListed).ToString("MM/dd/yyyy"),
+            //            Category = x.Category.Name,
+            //        })
+            //        .ToList();
+
+            //    if (input.SellerName != null)
+            //    {
+            //        products = products.Where(x => x.SellerName.ToLower().Contains(input.SellerName.ToLower())).ToList();
+            //    }
+            //    if (input.Category != null)
+            //    {
+            //        products = products.Where(x => x.Category.ToLower().Contains(input.Category.ToLower())).ToList();
+            //    }
+            //}else if(input.SellerName != null)
+            //{
+            //        products = context
+            //       .Products
+            //       .Where(x => x.User.UserName.ToLower().Contains(input.Name.ToLower()))
+            //       .Select(x => new SearchProductViewModel
+            //       {
+            //           Id = x.Id,
+            //           Name = x.Name,
+            //           SellerName = x.User.UserName,
+            //           ReleaseDate = ((DateTime)x.DateListed).ToString("MM/dd/yyyy"),
+            //           Category = x.Category.Name,
+            //       })
+            //       .ToList();
+            //    if (input.Category != null)
+            //    {
+            //        products = products.Where(x => x.Category.ToLower().Contains(input.Category.ToLower())).ToList();
+            //    }
+            //}
+            //else if(input.Category!=null){
+            //        products = context
+            //       .Products
+            //       .Where(x => x.Category.Name.ToLower().Contains(input.Name.ToLower()))
+            //       .Select(x => new SearchProductViewModel
+            //       {
+            //           Id = x.Id,
+            //           Name = x.Name,
+            //           SellerName = x.User.UserName,
+            //           ReleaseDate = ((DateTime)x.DateListed).ToString("MM/dd/yyyy"),
+            //           Category = x.Category.Name,
+            //       })
+            //       .ToList();
+            //}else
+            //{
+            //    throw new ArgumentException("Everything cannot be null");
+            //}
+
 
             return products;
         }

@@ -15,6 +15,7 @@ namespace EzBuy.ViewModels.Search
         public string SellerName { get; set; }
 
         public string ReleaseDate { get; set; }
+        public string Category { get; set; }
 
     }
 }

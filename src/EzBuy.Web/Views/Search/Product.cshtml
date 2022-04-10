@@ -4,56 +4,29 @@
 @{
     ViewData["Title"] = "Search menu";
 }
-
-<div class="pi-content">
-    <form class="container-form user-form" asp-action="ProductResults" method="post">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <h1 class="text-white">Product Name:</h1>
-                </div>
-                <div class="col-md-5">
-                    <div class="search-wrapper">
-                        <div class="search-box">
-                            <input class="search-input" type="text" asp-for="@Model.Name" placeholder="Enter product name">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <br />
-                </div>
-                <div class="col-md-5">
-                    <h1 class="text-white">Seller Name:</h1>
-                </div>
-                <div class="col-md-5">
-                    <div class="search-wrapper">
-                        <div class="search-box">
-                            <input class="search-input" type="text" asp-for="@Model.SellerName" placeholder="Enter seller name">
-
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
-        <div class="col-md-12">
-            <br />
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    @if (this.TempData["ModelState"] != null)
-                    {
-                        @foreach (var error in (string[])this.TempData["ModelState"])
-                        {
-                            <span class="input message">
-                                <span class="text-danger">@error</span>
-                            </span>
-                        }
+<!--https://codepen.io/Izaias/pen/PPJmQe-->
+<section class="background-form">
+    <div>
+        <form class="container-form user-form" asp-action="ProductResults" method="get">
+            <span class="form-input">
+                <input type="text" class="input__field" id="input-1" asp-for="@Model.Name" />
+                <label for="input-1" class="input__label">
+                    <span class="input__label-content">Product Name</span>
+                </label>
+            </span>
+            <span class="form-input">
+                <input type="text" class="input__field" id="input-2" asp-for="@Model.SellerName" />
+                <label for="input-2" class="input__label">
+                    <span class="input__label-content">Seller Name</span>
+                </label>
+            </span>
+            @if (this.TempData["ModelState"] != null)
+            {
+                <span class="input message">
+                    <span class="text-danger">@this.TempData["ModelState"]</span>
+                </span>
+            }
+            <input style="display: block;" type="submit" id="send-button" value="Search">
 
                     }
                 </div>
