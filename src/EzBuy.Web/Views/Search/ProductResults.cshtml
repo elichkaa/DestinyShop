@@ -25,9 +25,8 @@
                         <td>@Model.ToList()[i].ReleaseDate</td>
                         <td>@Model.ToList()[i].SellerName</td>
                         <td>
-                            <a asp-controller="Products" asp-action="Single" asp-route-id="@Model.ToList()[i].Id">
-                                
-                                Go to product page
+                            <a class="btn btn-danger" asp-controller="Products" asp-action="Single" asp-route-productid="@Model.ToList()[i].Id">
+                                Visit
                             </a>
                         </td>
                     </tr>

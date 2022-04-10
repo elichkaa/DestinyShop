@@ -6,11 +6,10 @@ using EzBuy.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using Stripe.Issuing;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton<ChargeService>(new ChargeService());
-builder.Services.AddTransient<IAddEzBucks, AddEzBucks>();
 
 // Add services to the container.
 StripeConfiguration.SetApiKey(builder.Configuration["Stripe:TestSecretKey"]);
@@ -34,6 +33,10 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 builder.Services.AddTransient<IProductService, ProductsService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddSingleton<ChargeService>(new ChargeService());
+builder.Services.AddSingleton<TransactionService>(new TransactionService());
+builder.Services.AddTransient<IAddEzBucks, AddEzBucks>();
 builder.
     Services.
     AddSingleton

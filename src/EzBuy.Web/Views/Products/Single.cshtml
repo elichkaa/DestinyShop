@@ -1,9 +1,10 @@
-﻿@using EzBuy.ViewModels.Products
+﻿@model FilledProductViewModel
+@using EzBuy.ViewModels.Products
 @{
     ViewData["Title"] = Model.Name;
     var orderedImages = Model.Images.OrderByDescending(x => x.IsCover).ToList();
 }
-@model FilledProductViewModel
+
 
 <!-- SECTION -->
 <div class="section">

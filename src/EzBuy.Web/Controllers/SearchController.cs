@@ -6,38 +6,31 @@ namespace EzBuy.Web.Controllers
 {
     public class SearchController : Controller
     {
-       
-            private readonly IProductService productsService;
+
+        private readonly IProductService productsService;
 
 
-            public SearchController(IProductService productsService)
+        public SearchController(IProductService productsService)
+        {
+            this.productsService = productsService;
+        }
+
+        public IActionResult Product()
+        {
+            return this.View();
+        }
+
+        public IActionResult ProductResults(SearchProductInputModel input)
+        {
+            if (!ModelState.IsValid)
             {
-                this.productsService = productsService;
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).ToList();
+                this.TempData["ModelState"] = errors;
+                return this.Redirect("/Search/Product/");
             }
-
-            public IActionResult Index()
-            {
-                return this.View();
-            }
-
-            public IActionResult Product()
-            {
-                return this.View();
-            }
-
-            public IActionResult ProductResults(SearchProductInputModel input)
-            {
-                if (!ModelState.IsValid)
-                {
-                    this.ModelState.AddModelError(string.Empty, "Product name should be 2 symbols minimum.");
-                    this.TempData["ModelState"] = this.ModelState.Root.Errors[0].ErrorMessage;
-                    return this.Redirect("/Search/Product/");
-                }
-                var products = productsService.SearchProducts(input);
-                return this.View(products);
-            }
-
-
+            var products = productsService.SearchProducts(input);
+            return this.View(products);
         }
     }
+}
 

@@ -72,27 +72,30 @@
                     <!-- product -->
                     @foreach (var product in @Model)
                     {
+
                         <div class="col-xs-4">
                             <div class="product">
+                                <a onclick="location.href='@Url.Action("Single", "Products", new { productId = @product.Id})'">
                                 <div class="product-img">
                                     <img class="card-img-top" src="@product.Cover" alt="Product image">
                                 </div>
+                                </a>
                                 <div class="product-body">
                                     <p class="product-category">@product.Category</p>
                                     <h3 class="product-name"><a href="#">@product.Name</a></h3>
+
+
                                     <h4 class="product-price">$@product.Price <del class="product-old-price">$@(product.Price + 39.99m)</del></h4>
                                 </div>
                                 <div class="add-to-cart">
-                                <a style="padding:10px; margin:10px" class="add-to-cart-btn" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id">Add to cart</a>
-                            </div>
+                                    <a style="padding:10px; margin:10px" class="add-to-cart-btn" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id">Add to cart</a>
+                                </div>
                             </div>
                             <div class="product result">
                                 <div class="@product.Category">
                                 </div>
                             </div>
-                            
                         </div>
-
                     }
                 </div>
                 <br />

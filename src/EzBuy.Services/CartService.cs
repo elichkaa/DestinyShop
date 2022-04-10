@@ -80,16 +80,11 @@ namespace EzBuy.Services
             }
             return sum;
         }
-        public void CheckOut(User user)
+        public async Task CheckOut(User user, decimal amount)
         {
-            user.EzBucks -= CalculateProductsSum(user.Cart);
+            user.EzBucks -= amount;
             this.context.Update(user);
-            foreach(var product in GetCartsProducts(user.Cart))
-            {
-                product.User.EzBucks+=product.Price;
-                this.context.Update(product.User);
-                RemoveProductFromCart(user.Cart, product);
-            }
+            await this.context.SaveChangesAsync();
         }
         }
     }
