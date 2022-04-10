@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EzBuy.InputModels.Search
 {
@@ -16,8 +11,5 @@ namespace EzBuy.InputModels.Search
 
         [Display(Name = "Seller Name")]
         public string SellerName { get; set; }
-
-        [Display(Name = "Category")]
-        public string Category { get; set; }
     }
 }

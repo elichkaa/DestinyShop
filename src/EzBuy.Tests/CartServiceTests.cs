@@ -144,7 +144,7 @@ namespace EzBuy.Tests
             this.cartService.AddProductToCart(product, cart);
             this.cartService.AddProductToCart(product2, cart);
 
-            this.cartService.CheckOut(user);
+            this.cartService.CheckOut(user, 0);
             NUnit.Framework.Assert.AreEqual(3, user.EzBucks);
             NUnit.Framework.Assert.AreEqual(117, seller.EzBucks);
         }
