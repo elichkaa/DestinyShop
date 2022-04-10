@@ -16,5 +16,8 @@ namespace EzBuy.InputModels.Search
 
         [Display(Name = "Seller Name")]
         public string SellerName { get; set; }
+
+        [Display(Name = "Category")]
+        public string Category { get; set; }
     }
 }

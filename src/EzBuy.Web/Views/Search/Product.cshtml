@@ -19,6 +19,12 @@
                     <span class="input__label-content">Seller Name</span>
                 </label>
             </span>
+            <span class="form-input">
+                <input type="text" class="input__field" id="input-2" asp-for="@Model.Category" />
+                <label for="input-2" class="input__label">
+                    <span class="input__label-content">Category</span>
+                </label>
+            </span>
             @if (this.TempData["ModelState"] != null)
             {
                 <span class="input message">
