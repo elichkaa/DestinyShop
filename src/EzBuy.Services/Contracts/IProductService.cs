@@ -13,7 +13,7 @@ namespace EzBuy.Services.Contracts
 {
     public interface IProductService
     {
-        public List<ProductOnAllPageViewModel> GetAll(int currentPage, string[] categories);
+        public List<ProductOnAllPageViewModel> GetAll(int currentPage);
         public Task<int> AddProductAsync(AddProductInputModel input, User user, string imgPath);
         public Task EditProductAsync(EditProductInputModel input, string imgPath);
 

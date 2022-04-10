@@ -1,16 +1,20 @@
 ﻿@using EzBuy.ViewModels.Home
+@using EzBuy.ViewModels.Cart
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor 
-@{
+@*@{
     ViewData["Title"] = "Home Page";
-}
+    List<string> data = new List<string>();
+    if(httpContextAccessor.HttpContext.Session.GetComplexData<List<CartProductViewModel>>("Products") != null){
+        data = httpContextAccessor.HttpContext.Session.GetComplexData<List<CartProductViewModel>>("Products").Select(x => x.ProductName).ToList();
+    }
+    
+}*@
 @model HomePageViewModel
 
-<div class="text-center">
-<p><b>Name:</b> @httpContextAccessor.HttpContext.Session.GetString("_Name");<b>Age:
-
-</b> @httpContextAccessor.HttpContext.Session.GetInt32("_Age").ToString()</p>
-</div>
+@*<div class="text-center">
+<p><b>Products:</b> @(string.Join(" ", data))<b>
+</div>*@
 
 <!-- SECTION -->
 <div class="section">

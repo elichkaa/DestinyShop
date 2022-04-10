@@ -1,38 +1,85 @@
-﻿<style>
+﻿@using EzBuy.ViewModels.Cart
+@using EzBuy.Web.Controllers
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@{
+    var data = new List<CartItem>();
+    if (httpContextAccessor.HttpContext != null)
+    {
+        data = SessionHelper.GetObjectFromJson<List<CartItem>>(httpContextAccessor.HttpContext.Session, "cart");
+    }
+}
+
+<style>
     .list-group {
-        max-height: 450px;
+        max-height: 100vh;
         max-width: 100%;
         margin-bottom: 10px;
-        overflow: scroll;
+        overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
         overflow-x: hidden;
     }
 </style>
 
 <form asp-action="DisplayCart" role="form">
-    <div backdrop="true" class="modal-body form-horizontal">
+    <div class="modal-body">
         <div class="modal-body">
             <h4>Cart</h4>
             <br />
-            <div class="list-group">
-                <div class="card mb-2">
-                    <div class="row no-gutters">
-                        <div class="col-md-3">
-                            <img src="..." class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Product Price</p>
+
+            @if (@data == null || @data.Count == 0)
+            {
+                <p><strong>Cart empty.</strong></p>
+            }
+            else
+            {
+
+                @foreach (var product in @data)
+                {
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h5 class="card-title">@product.Product.ProductName</h5>
+                                            <p class="card-text">@product.Product.Price</p>
+                                            <p class="card-text">@product.Quantity</p>
+                                        </div>
+                                        <div class="col-sm-6 text-right">
+                                            <img class="" src="@product.Product.ProductImage" alt="sans" width="200px">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
+
+
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-danger">Proceed to payment</button>
+            <a asp-controller="Cart" asp-action="Index" class="btn btn-primary">Check detailed</a>
         </div>
     </div>
 </form>
+
+@*<div class="card mb-2">
+    <div class="row no-gutters">
+    <div class="col-md-3">
+    <img src="@product.ProductImage" class="cart-img-top">
+    </div>
+    <div class="col-md-8">
+    <div class="card-body">
+    <h5 class="card-title">@product.ProductName</h5>
+    <p class="card-text">@product.Price</p>
+    </div>
+    </div>
+    </div>
+    </div>*@
+
+@* </div>*@

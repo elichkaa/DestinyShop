@@ -25,7 +25,7 @@ namespace EzBuy.Services
             this.cloudinary = cloudinary;
         }
 
-        public List<ProductOnAllPageViewModel> GetAll(int currentPage, string[] categories)
+        public List<ProductOnAllPageViewModel> GetAll(int currentPage)
         {
             var pageCount = this.GetMaxPages();
             if (currentPage <= 0 || currentPage > pageCount)
@@ -33,36 +33,24 @@ namespace EzBuy.Services
                 return null;
             }
             var products = new List<ProductOnAllPageViewModel>();
-            if (categories == null || categories.Length == 0)
-            {
-                products = context.
-                Products.
-                OrderByDescending(x => x.DateListed).
-                Select(x => new ProductOnAllPageViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    SellerName = x.User.UserName,
-                    Description = x.Description,
-                    Price = x.Price,
-                    Category = x.Category.Name,
-                    PageCount = (int)pageCount,
-                    CurrentPage = currentPage,
-                    Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
-                }).Skip((currentPage - 1) * productsOnPage).Take(productsOnPage).ToList();
 
-                return products;
-            }
-            else
+            products = context.
+            Products.
+            OrderByDescending(x => x.DateListed).
+            Select(x => new ProductOnAllPageViewModel
             {
-                var filtered = new List<ProductOnAllPageViewModel>();
-                foreach (var category in categories)
-                {
-                    filtered.Add(products.Where(x => x.Category == category).FirstOrDefault());
-                }
-                return filtered;
-            }
-            
+                Id = x.Id,
+                Name = x.Name,
+                SellerName = x.User.UserName,
+                Description = x.Description,
+                Price = x.Price,
+                Category = x.Category.Name,
+                PageCount = (int)pageCount,
+                CurrentPage = currentPage,
+                Cover = x.Images.Where(x => x.IsCover == true).FirstOrDefault()!.Url
+            }).Skip((currentPage - 1) * productsOnPage).Take(productsOnPage).ToList();
+
+            return products;
         }
 
         public decimal GetMaxPages() => Math.Ceiling((decimal)context.Products.Count() / productsOnPage);
@@ -344,7 +332,7 @@ namespace EzBuy.Services
 
             if (input.SellerName != null)
             {
-                products= products.Where(x => x.SellerName.ToLower().Contains(input.SellerName.ToLower())).ToList();
+                products = products.Where(x => x.SellerName.ToLower().Contains(input.SellerName.ToLower())).ToList();
             }
 
             return products;

@@ -3,12 +3,35 @@
 @model List<Charge>
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
 @{
     var usr = await UserManager.GetUserAsync(User);
     var email = usr?.Email;
 }
-@foreach(var charge in Model){
-    if (email==charge.ReceiptEmail) {
-        <h1>[@charge.Created]-@("**** **** ****"+charge.PaymentMethodDetails.Card.Last4)-@(string.Format("{0:f2}$",(charge.Amount/100.0M)))</h1>
-    }
-}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Card number</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var charge in Model)
+        {
+            if (email == charge.ReceiptEmail)
+            {
+                <tr>
+                    <td>@charge.Created</td>
+                    <td>@("**** **** ****"+charge.PaymentMethodDetails.Card.Last4)</td>
+                    <td>@(string.Format("{0:f2}$",(charge.Amount/100.0M)))</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

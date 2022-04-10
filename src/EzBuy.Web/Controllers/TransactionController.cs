@@ -14,5 +14,11 @@ namespace EzBuy.Web.Controllers
         {
             return View(this.chargeService.List().ToList());
         }
+
+        public IActionResult DeductMoney()
+        {
+
+            return this.RedirectToAction("Index");
+        }
     }
 }

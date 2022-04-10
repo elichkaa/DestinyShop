@@ -38,9 +38,9 @@ namespace EzBuy.Web.Controllers
             return View();
         }
 
-        public IActionResult Store(string[] categories, int id = 1)
+        public IActionResult Store(int id = 1)
         {
-            var products = this.productService.GetAll(id, categories);
+            var products = this.productService.GetAll(id);
             if(products == null || products.Count == 0)
             {
                 return this.RedirectToAction("Error", "Home", new { message = "No products available in shop" });
