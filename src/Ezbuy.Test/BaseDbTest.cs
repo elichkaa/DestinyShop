@@ -19,17 +19,28 @@ namespace Ezbuy.Test
             this.context.Database.EnsureCreated();
         }
 
+        [OneTimeTearDown]
+        public async Task LastTearDown()
+        {
+            await this.context.DisposeAsync();
+            await this.connection.DisposeAsync();
+        }
+
+        /// <summary>
+        /// Adds <c>count</c> products to the database. Ensures there are no duplicate id's.
+        /// </summary>
+        /// <param name="count">number of products to add to database</param>
         public async Task PopulateDbWithProducts(int count)
         {
+            int productsAlreadyInDb = await context.Products.CountAsync();
             var products = new List<Product>();
-            for (int i = 1; i <= count; i++)
+            for (int i = productsAlreadyInDb + 1; i <= count; i++)
             {
-                DateTime? dateTime = new DateTime(2020, 12, i);
                 products.Add(new Product()
                 {
                     Id = i,
                     Name = $"Product{i}",
-                    DateListed = dateTime,
+                    DateListed = new DateTime(2020, 12, 1),
                     Tags = new List<ProductTags>()
                     {
                         new ProductTags()
@@ -46,10 +57,6 @@ namespace Ezbuy.Test
 
             await context.Products.AddRangeAsync(products);
             await context.SaveChangesAsync();
-        }
-
-        public void Dispose() { 
-            this.context.Dispose();
         }
     }
 }

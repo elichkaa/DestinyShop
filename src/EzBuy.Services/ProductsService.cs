@@ -93,6 +93,7 @@ namespace EzBuy.Services
                 }
             }
         }
+
         public Manufacturer FindManufacturer(string manufacturerName)
         {
             var manufacturer = context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
