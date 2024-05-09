@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBuy.ViewModels", "EzBuy.V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBuy.WebApi", "EzBuy.WebApi\EzBuy.WebApi.csproj", "{FB8BD2C4-5379-44CE-9BD6-0F1C97F1A17D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ezbuy.Test", "Ezbuy.Test\Ezbuy.Test.csproj", "{C7428F49-46B2-434F-B6AA-D21CEDDDE907}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{FB8BD2C4-5379-44CE-9BD6-0F1C97F1A17D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB8BD2C4-5379-44CE-9BD6-0F1C97F1A17D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB8BD2C4-5379-44CE-9BD6-0F1C97F1A17D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7428F49-46B2-434F-B6AA-D21CEDDDE907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7428F49-46B2-434F-B6AA-D21CEDDDE907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7428F49-46B2-434F-B6AA-D21CEDDDE907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7428F49-46B2-434F-B6AA-D21CEDDDE907}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{8DFDB6C5-A133-421C-8A3F-30086479214F} = {7A5A3B9A-69E4-4D41-A81E-608B73E335C1}
 		{0E3BE7D0-6A2A-4C0E-9EC5-F428D14B2D84} = {7A5A3B9A-69E4-4D41-A81E-608B73E335C1}
 		{FB8BD2C4-5379-44CE-9BD6-0F1C97F1A17D} = {7A5A3B9A-69E4-4D41-A81E-608B73E335C1}
+		{C7428F49-46B2-434F-B6AA-D21CEDDDE907} = {E6095617-4E4B-4D92-9497-C3E897DDC3BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3A4539F-88DB-4C85-8B0A-AF4D763E22AA}

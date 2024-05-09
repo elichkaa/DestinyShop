@@ -31,4 +31,8 @@
     <ProjectReference Include="..\EzBuy.Services\EzBuy.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
+
 </Project>
