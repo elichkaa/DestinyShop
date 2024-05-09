@@ -33,6 +33,17 @@ namespace Ezbuy.Test.Services
         }
 
         [Test]
+        public void FindMethodsReturnNothingOnEmptyDb()
+        {
+            Assert.IsEmpty(this.productsService.FindTags(String.Empty));
+            Assert.IsEmpty(this.productsService.FindTags(null));
+            Assert.IsNull(this.productsService.FindManufacturer(String.Empty));
+            Assert.IsNull(this.productsService.FindManufacturer(null));
+            Assert.IsEmpty(this.productsService.FindProductTags(new Product()));
+            Assert.IsEmpty(this.productsService.FindProductTags(null));
+        }
+
+        [Test]
         public void CorrectCountAfterAddingProducts()
         {
             PopulateDbWithProducts(count: 2).GetAwaiter().GetResult();

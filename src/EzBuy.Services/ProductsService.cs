@@ -94,10 +94,9 @@ namespace EzBuy.Services
             }
         }
 
-        public Manufacturer FindManufacturer(string manufacturerName)
+        public Manufacturer? FindManufacturer(string manufacturerName)
         {
-            var manufacturer = context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
-            return manufacturer;
+            return this.context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
         }
 
         public Category? GetCategory(int categoryId)
@@ -107,8 +106,8 @@ namespace EzBuy.Services
 
         public ICollection<Tag> FindTags(string tagString)
         {
-            var tags = tagString.Split(",").ToList();
-            var tagsCollection = context.Tags.Where(x => tags.Contains(x.Name)).ToList();
+            var tags = tagString != null ? tagString.Split(",").ToList() : new List<String>();
+            var tagsCollection = this.context.Tags.Where(x => tags.Contains(x.Name)).ToList();
             return tagsCollection;
         }
 
@@ -236,8 +235,11 @@ namespace EzBuy.Services
         }
         public ICollection<ProductTags> FindProductTags(Product product)
         {
-            var connections = context.ProductTags.Where(x => x.ProductId == product.Id).ToList();
-            return connections;
+            if (product != null)
+            {
+                return context.ProductTags.Where(x => x.ProductId == product.Id).ToList(); ;
+            }
+            return new List<ProductTags>();
         }
         public void AddNonexistentTags(string tagString)
         {
