@@ -2,6 +2,8 @@
 using EzBuy.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.Generic;
 
 namespace Ezbuy.Test
 {
@@ -27,36 +29,60 @@ namespace Ezbuy.Test
         }
 
         /// <summary>
-        /// Adds <c>count</c> products to the database. Ensures there are no duplicate id's.
+        /// Populates the database with objects of a specific type. Ensures there are no duplicate ids.
         /// </summary>
-        /// <param name="count">number of products to add to database</param>
-        public async Task PopulateDbWithProducts(int count)
+        /// <param name="table">table to add objects to</param
+        /// <param name="newObjects">list of objects to add to database, must be of base type <c>MainEntity</c></param>
+        private async Task PopulateDbWithObjectHelper<T>(DbSet<T> table, List<T> newObjects) where T: MainEntity
         {
-            int productsAlreadyInDb = await context.Products.CountAsync();
-            var products = new List<Product>();
-            for (int i = productsAlreadyInDb + 1; i <= count; i++)
+            int objectsAlreadyInDb = await table.CountAsync();
+            for (int i = 0; i < newObjects.Count; i++)
+            {
+                newObjects[i].Id = objectsAlreadyInDb + i + 1;
+            }
+            await table.AddRangeAsync(newObjects);
+            await context.SaveChangesAsync();
+        }
+
+        protected async Task PopulateDbWithProducts(int count)
+        {
+            int tagsCount = await this.context.Tags.CountAsync();
+            List<Product> products = new List<Product>();
+            for (int i = 0; i < count; i++)
             {
                 products.Add(new Product()
                 {
                     Id = i,
                     Name = $"Product{i}",
-                    DateListed = new DateTime(2020, 12, 1),
+                    DateListed = DateTime.Now,
                     Tags = new List<ProductTags>()
                     {
                         new ProductTags()
                         {
                             Tag = new Tag()
                             {
-                                Id = i,
+                                Id = tagsCount + i + 1,
                                 Name =  $"Tag{i}"
                             }
                         }
                     }
                 });
             }
+            await PopulateDbWithObjectHelper(this.context.Products, products);
+        }
 
-            await context.Products.AddRangeAsync(products);
-            await context.SaveChangesAsync();
+        protected async Task PopulateDbWithCategories(int count)
+        {
+            List<Category> categories = new List<Category>();
+            for (int i = 0; i < count; i++)
+            {
+                categories.Add(new Category()
+                {
+                    Id = i,
+                    Name = $"TestCategory{i}"
+                });
+            }
+            await PopulateDbWithObjectHelper(this.context.Categories, categories);
         }
     }
 }

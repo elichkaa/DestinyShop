@@ -23,7 +23,7 @@ namespace Ezbuy.Test.Web
             Assert.That(this.productsService.GetMaxPages(), Is.EqualTo(1));
 
             PopulateDbWithProducts(count: 18).GetAwaiter().GetResult();
-            Assert.That(this.productsService.GetMaxPages(), Is.EqualTo(2));
+            Assert.That(this.productsService.GetMaxPages(), Is.EqualTo(3));
         }
     }
 }

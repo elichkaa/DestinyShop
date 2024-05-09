@@ -100,7 +100,7 @@ namespace EzBuy.Services
             return manufacturer;
         }
 
-        public Category GetCategory(int categoryId)
+        public Category? GetCategory(int categoryId)
         {
             return this.context.Categories.FirstOrDefault(x => x.Id == categoryId);
         }

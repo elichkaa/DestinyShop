@@ -1,7 +1,9 @@
 ﻿using CloudinaryDotNet;
 using EzBuy.Data;
+using EzBuy.Models;
 using EzBuy.Services;
 using EzBuy.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,25 @@ namespace Ezbuy.Test.Services
         }
 
         [Test]
-        public void TestAddingProducts()
+        public void CorrectCountAfterAddingProducts()
         {
             PopulateDbWithProducts(count: 2).GetAwaiter().GetResult();
 
             Assert.That(this.context.Products.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetNonExistingCategoryReturnsNull()
+        {
+            Assert.Null(this.productsService.GetCategory(-1));
+        }
+
+        [Test]
+        public async Task GetExistingCategorySuccess()
+        {
+            PopulateDbWithCategories(count: 1).GetAwaiter().GetResult();
+            Assert.That(await this.context.Categories.CountAsync(), Is.EqualTo(1));
+            Assert.NotNull(this.productsService.GetCategory(1));
         }
     }
 }
