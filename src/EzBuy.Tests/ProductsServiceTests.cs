@@ -56,49 +56,6 @@ namespace EzBuy.Tests
         }
 
         [Fact]
-        public void FindTagsReturnsExistingTags()
-        {
-            this.context.Tags.Add(new Tag
-            {
-                Id = 1,
-                Name = "dope"  
-            });
-            this.context.SaveChanges();
-            this.context.Tags.Add(new Tag
-            {
-                Id = 2,
-                Name = "rad"
-            });
-            this.context.SaveChanges();
-            var tags = productsService.FindTags("magnificent,bold,dope,cool,rad,idk");
-
-            Assert.NotNull(tags);
-            Assert.Equal(2, tags.Count);
-            Assert.Equal("dope", tags.ToList()[0].Name);
-            Assert.Equal("rad", tags.ToList()[1].Name);
-        }
-
-        [Fact]
-        public void FindTagsReturnsUniqeTags()
-        {
-            this.context.Tags.Add(new Tag
-            {
-                Id = 1,
-                Name = "dope",
-            });
-            this.context.SaveChanges();
-            this.context.Tags.Add(new Tag
-            {
-                Id = 2,
-                Name = "rad"
-            });
-            this.context.SaveChanges();
-            var tags = productsService.FindTags("magnificent,bold,dope,cool,rad,idk,dope,dope,dope");
-            Assert.NotNull(tags);
-            Assert.Equal(2, tags.Count);
-        }
-
-        [Fact]
         public void AddProductAddsProducts()
         {
             Assert.Equal(0, this.context.Products.Count());

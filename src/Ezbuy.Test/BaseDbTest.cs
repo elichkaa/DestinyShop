@@ -2,17 +2,16 @@
 using EzBuy.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Generic;
 
 namespace Ezbuy.Test
 {
     public class BaseDbTest
     {
-        private SqliteConnection connection;
+        protected SqliteConnection connection;
         protected EzBuyContext context;
 
-        public BaseDbTest() {
+        public BaseDbTest()
+        {
             this.connection = new SqliteConnection("DataSource=:memory:");
             this.connection.Open();
             var options = new DbContextOptionsBuilder<EzBuyContext>().UseSqlite(this.connection);
@@ -33,7 +32,7 @@ namespace Ezbuy.Test
         /// </summary>
         /// <param name="table">table to add objects to</param
         /// <param name="newObjects">list of objects to add to database, must be of base type <c>MainEntity</c></param>
-        private async Task PopulateDbWithObjectHelper<T>(DbSet<T> table, List<T> newObjects) where T: MainEntity
+        private async Task PopulateDbWithObjectHelper<T>(DbSet<T> table, List<T> newObjects) where T : MainEntity
         {
             int objectsAlreadyInDb = await table.CountAsync();
             for (int i = 0; i < newObjects.Count; i++)
@@ -83,6 +82,20 @@ namespace Ezbuy.Test
                 });
             }
             await PopulateDbWithObjectHelper(this.context.Categories, categories);
+        }
+
+        protected async Task PopulateDbWithTags(int count)
+        {
+            List<Tag> tags = new List<Tag>();
+            for (int i = 0; i < count; i++)
+            {
+                tags.Add(new Tag
+                {
+                    Id = i,
+                    Name = $"test{i}"
+                });
+            }
+            await PopulateDbWithObjectHelper(this.context.Tags, tags);
         }
     }
 }
