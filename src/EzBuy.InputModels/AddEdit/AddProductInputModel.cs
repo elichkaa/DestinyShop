@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EzBuy.InputModels.AddEdit
 {
     public class AddProductInputModel
     {
         [Required]
-        [Display(Name="Product name")]
+        [Display(Name = "Product name")]
         public string Name { get; set; }
 
         [Required]
@@ -25,7 +20,7 @@ namespace EzBuy.InputModels.AddEdit
 
         [Required]
         [Display(Name = "Product category")]
-        public int Category { get; set; }
+        public int? Category { get; set; }
 
         [Display(Name = "Product cover")]
         [DataType(DataType.Upload)]

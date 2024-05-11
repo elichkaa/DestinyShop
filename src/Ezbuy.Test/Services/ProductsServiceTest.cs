@@ -39,10 +39,10 @@ namespace Ezbuy.Test.Services
         [Test]
         public void FindMethodsReturnNothingWithEmptyArg()
         {
-            Assert.IsEmpty(this.productsService.FindTags(String.Empty));
-            Assert.IsEmpty(this.productsService.FindTags(null));
-            Assert.IsNull(this.productsService.FindManufacturer(String.Empty));
-            Assert.IsNull(this.productsService.FindManufacturer(null));
+            Assert.IsEmpty(this.productsService.GetTags(String.Empty));
+            Assert.IsEmpty(this.productsService.GetTags(null));
+            Assert.IsNull(this.productsService.GetManufacturer(String.Empty));
+            Assert.IsNull(this.productsService.GetManufacturer(null));
             Assert.IsEmpty(this.productsService.FindProductTags(new Product()));
             Assert.IsEmpty(this.productsService.FindProductTags(null));
         }
@@ -63,9 +63,9 @@ namespace Ezbuy.Test.Services
         }
 
         [Test]
-        public void FindTagsReturnsUniqueExistingTags()
+        public void GetTagsReturnsUniqueExistingTags()
         {
-            var tags = productsService.FindTags("Tag0,Tag1,Tag0");
+            var tags = productsService.GetTags("Tag0,Tag1,Tag0");
 
             Assert.NotNull(tags);
             Assert.That(tags.Count, Is.EqualTo(2));
@@ -85,6 +85,14 @@ namespace Ezbuy.Test.Services
             var awesomeTag = this.context.Tags.FirstOrDefault(x => x.Name == "awesome");
             var typicalTag = this.context.Tags.FirstOrDefault(x => x.Name == "typical");
 
+            Assert.NotNull(incredibleTag);
+            Assert.That(incredibleTag.Name, Is.EqualTo("incredible"));
+            Assert.NotNull(niceTag);
+            Assert.That(niceTag.Name, Is.EqualTo("nice"));
+            Assert.NotNull(vroomTag);
+            Assert.That(vroomTag.Name, Is.EqualTo("vroom"));
+            Assert.NotNull(coolTag);
+            Assert.That(coolTag.Name, Is.EqualTo("cool"));
             Assert.NotNull(awesomeTag);
             Assert.That(awesomeTag.Name, Is.EqualTo("awesome"));
             Assert.NotNull(typicalTag);
@@ -100,12 +108,22 @@ namespace Ezbuy.Test.Services
             var tags = this.context.Tags.ToList().TakeLast(2).ToList();
             var productFromDb = await context.Products.FirstOrDefaultAsync(x => x.Name == "Product0");
             Assert.NotNull(productFromDb);
+
             await this.productsService.AddTagsToProduct(tags, productFromDb);
             Assert.That(productFromDb.Tags.Count(), Is.EqualTo(3));
             Assert.That(productFromDb.Tags.Select(x => x.TagId).TakeLast(2).ToList(), Is.EqualTo(tags.Select(x => x.Id).ToList()));
-            var incredibleTag = this.context.Tags.FirstOrDefault(x => x.Name == "incredible");
-            var niceTag = this.context.Tags.FirstOrDefault(x => x.Name == "nice");
-            this.context.Tags.RemoveRange(new List<Tag> { incredibleTag, niceTag });
+
+            var incredibleTag = await this.context.Tags.FirstOrDefaultAsync(x => x.Name == "incredible");
+            var niceTag = await this.context.Tags.FirstOrDefaultAsync(x => x.Name == "nice");
+            await this.context.Tags.Where(x => x.Equals(niceTag) || x.Equals(incredibleTag)).ExecuteDeleteAsync();
+            Assert.False(await this.context.ProductTags.Select(x => x.Product == productFromDb && x.Tag == incredibleTag).FirstOrDefaultAsync());
+            Assert.False(await this.context.ProductTags.Select(x => x.Product == productFromDb && x.Tag == niceTag).FirstOrDefaultAsync());
+        }
+
+        [Test]
+        public void AddProductComponentsWithInvalidArguments()
+        {
+            Assert.ThrowsAsync<ArgumentException>(async () => await this.productsService.AddProductComponents(null));
         }
     }
 }

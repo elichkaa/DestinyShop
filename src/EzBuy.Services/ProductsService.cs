@@ -59,21 +59,20 @@ namespace EzBuy.Services
             return this.context.Categories.FirstOrDefault(x => x.Id == categoryId);
         }
 
-        public Manufacturer? FindManufacturer(string manufacturerName)
+        public Manufacturer? GetManufacturer(string manufacturerName)
         {
             return this.context.Manufacturers.FirstOrDefault(x => x.Name == manufacturerName);
         }
 
-        public ICollection<Tag> FindTags(string tagString)
+        public ICollection<Tag> GetTags(string tagString)
         {
             var tags = tagString != null ? tagString.Split(",").ToList() : new List<String>();
-            var tagsCollection = this.context.Tags.Where(x => tags.Contains(x.Name)).ToList();
-            return tagsCollection;
+            return this.context.Tags.Where(x => tags.Contains(x.Name)).ToList();
         }
 
-        public void AddProductComponents(AddProductInputModel input)
+        public async Task AddProductComponents(AddProductInputModel input)
         {
-            if (input.Name == null || input.Price == 0 || input.Description == null || input.Category == null)
+            if (input == null || input.Name == null || input.Price == 0 || input.Description == null || input.Category == null)
             {
                 throw new ArgumentException("Dont be shy put some more");
             }
@@ -88,7 +87,7 @@ namespace EzBuy.Services
                         //Id = GetBiggestId<Manufacturer>() + 1,
                         Name = manufacturerName
                     });
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
                 if (input.Tags != null)
                 {
@@ -105,7 +104,7 @@ namespace EzBuy.Services
                             });
                         }
                     }
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
             }
         }
@@ -127,8 +126,8 @@ namespace EzBuy.Services
                 Name = input.Name,
                 Description = input.Description,
                 Price = input.Price,
-                Manufacturer = FindManufacturer(input.Manufacturer),
-                Category = GetCategory(input.Category),
+                Manufacturer = GetManufacturer(input.Manufacturer),
+                Category = GetCategory((int)input.Category),
                 DateListed = DateTime.Now,
                 User = user,
                 Images = uploadedImages
@@ -136,7 +135,7 @@ namespace EzBuy.Services
             await context.Products.AddAsync(newProduct);
             await context.SaveChangesAsync();
             newProduct = await context.Products.FirstOrDefaultAsync(x => x.Name == input.Name);
-            var tagsToAdd = FindTags(input.Tags);
+            var tagsToAdd = GetTags(input.Tags);
             if (newProduct != null)
             {
                 await AddTagsToProduct(tagsToAdd, newProduct);
@@ -217,11 +216,11 @@ namespace EzBuy.Services
             if (input.NewTags != null)
             {
                 AddNonexistentTags(input.NewTags);
-                AddTagsToProduct(FindTags(input.NewTags), product);
+                AddTagsToProduct(GetTags(input.NewTags), product);
             }
             if (input.RemoveTags != null)
             {
-                RemoveTags(FindTags(input.RemoveTags), product);
+                RemoveTags(GetTags(input.RemoveTags), product);
             }
         }
         public void RemoveTags(ICollection<Tag> tags, Product product)
