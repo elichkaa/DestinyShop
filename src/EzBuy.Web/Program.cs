@@ -3,22 +3,19 @@ using EzBuy.Data;
 using EzBuy.Models;
 using EzBuy.Services;
 using EzBuy.Services.Contracts;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 using Stripe.Issuing;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-StripeConfiguration.SetApiKey(builder.Configuration["Stripe:TestSecretKey"]);
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:TestSecretKey"];
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<EzBuyContext>(options =>
-    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
+builder.Services.AddDbContext<EzBuyContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("EzBuy.Data")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddDefaultIdentity<User>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -37,17 +34,12 @@ builder.Services.AddTransient<ICartService, CartService>();
 builder.Services.AddSingleton<ChargeService>(new ChargeService());
 builder.Services.AddSingleton<TransactionService>(new TransactionService());
 builder.Services.AddTransient<IAddEzBucks, AddEzBucks>();
-builder.
-    Services.
-    AddSingleton
-    <IConfiguration>
-    (builder.Configuration);
+
 builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
 CloudinaryDotNet.Account account = new CloudinaryDotNet.Account(
                 builder.Configuration.GetSection("Cloudinary:cloud").Value,
                 builder.Configuration.GetSection("Cloudinary:apiKey").Value,
                 builder.Configuration.GetSection("Cloudinary:apiSecret").Value);
-
 Cloudinary cloudinary = new Cloudinary(account);
 builder.Services.AddSingleton(cloudinary);
 builder.Services.AddDistributedMemoryCache();

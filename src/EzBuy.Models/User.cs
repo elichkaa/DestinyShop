@@ -2,16 +2,11 @@
 
 namespace EzBuy.Models
 {
-    public class User : IdentityUser<string>
+    public class User : IdentityUser<Guid>
     {
-        public User()
-        {
-            this.Id = Guid.NewGuid().ToString();
-        }
-
         public DateTime CreatedOn { get; set; }
 
-        public DateTime? ModifiedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
 
         public bool IsDeleted { get; set; }
 

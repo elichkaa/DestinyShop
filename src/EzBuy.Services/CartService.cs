@@ -1,15 +1,10 @@
 ﻿using EzBuy.Data;
 using EzBuy.Models;
 using EzBuy.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EzBuy.Services
 {
-    public class CartService:ICartService
+    public class CartService : ICartService
     {
         private readonly EzBuyContext context;
         public CartService(EzBuyContext context)
@@ -18,7 +13,8 @@ namespace EzBuy.Services
         }
         public void CreateUsersCart(User user)
         {
-            var cart = new Cart{
+            var cart = new Cart
+            {
                 UserId = user.Id
             };
             this.context.Carts.Add(cart);
@@ -28,10 +24,10 @@ namespace EzBuy.Services
         {
             int count = 0;
             if (cart.Products != null) { count = cart.Products.Count; }
-            
-            if (count<5)
+
+            if (cart != null && cart.Products != null && count < 5)
             {
-                context.CartProducts.Add(new CartProducts(product.Id, cart.Id));
+                cart.Products.Add(product);
                 context.SaveChanges();
             }
             else
@@ -41,27 +37,27 @@ namespace EzBuy.Services
         }
         public Cart GetCartByUserId(User user)
         {
-            var cart=context.Carts.FirstOrDefault(x => x.UserId == user.Id);
-            if(cart == null) throw new ArgumentException("No such user or he doesnt have a cart");
+            var cart = context.Carts.FirstOrDefault(x => x.UserId == user.Id);
+            if (cart == null) throw new ArgumentException("No such user or he doesnt have a cart");
             return cart;
         }
         public void RemoveProductFromCart(Cart cart, Product product)
         {
-            foreach (var connection in cart.Products)
+            foreach (var connection in cart.CartProducts)
             {
-                if(connection.ProductId==product.Id)
+                if (connection.ProductId == product.Id)
                     context.CartProducts.Remove(connection);
                 context.SaveChanges();
             }
         }
         public ICollection<Product> GetCartsProducts(Cart cart)
         {
-            var products=new List<Product>();
-            foreach (var productConection in cart.Products)
+            var products = new List<Product>();
+            foreach (var productConection in cart.CartProducts)
             {
                 products.Add(this.context.Products.FirstOrDefault(x => x.Id == productConection.ProductId));
             }
-            if(products.Count > 0)
+            if (products.Count > 0)
             {
                 return products;
             }
@@ -74,7 +70,7 @@ namespace EzBuy.Services
         {
             decimal sum = 0;
             var products = GetCartsProducts(cart);
-            foreach(var product in products)
+            foreach (var product in products)
             {
                 sum += product.Price;
             }
@@ -86,6 +82,6 @@ namespace EzBuy.Services
             this.context.Update(user);
             await this.context.SaveChangesAsync();
         }
-        }
     }
+}
 

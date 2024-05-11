@@ -1,11 +1,11 @@
 ﻿using EzBuy.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace EzBuy.Data
 {
-    public class EzBuyContext : IdentityDbContext<User, IdentityRole<string>, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class EzBuyContext : IdentityDbContext<User, IdentityRole<Guid>, Guid, IdentityUserClaim<Guid>, IdentityUserRole<Guid>, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
 
         public EzBuyContext(DbContextOptions<EzBuyContext> options)
@@ -21,20 +21,47 @@ namespace EzBuy.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CartProducts>()
-            .HasKey(bc => new { bc.ProductId, bc.CartId });
+            modelBuilder.Entity<User>(c =>
+            {
+                c.Property(p => p.CreatedOn).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+                c.Property(p => p.ModifiedOn).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAddOrUpdate();
+                c.Property(p => p.DeletedOn).HasDefaultValue(null);
+                c.Property(p => p.IsDeleted).HasDefaultValue(false);
+                c.Property(p => p.EzBucks).HasColumnType("decimal(5,2)").HasPrecision(5).HasDefaultValue(0);
+                c.HasOne(a => a.Cart).WithOne(b => b.User).HasForeignKey<Cart>(b => b.UserId);
+            });
+
+            modelBuilder.Entity<Product>(p =>
+            {
+                p.Property(x => x.Price).HasColumnType("decimal(5,2)").HasPrecision(5).HasDefaultValue(0);
+            });
 
             modelBuilder.Entity<ProductTags>()
             .HasKey(bc => new { bc.ProductId, bc.TagId });
 
-            modelBuilder.Entity<User>()
-            .HasOne(a => a.Cart)
-            .WithOne(b => b.User)
-            .HasForeignKey<Cart>(b => b.UserId);
+            modelBuilder.Entity<Product>()
+            .HasMany(e => e.Carts)
+            .WithMany(e => e.Products)
+            .UsingEntity<CartProduct>();
+
+            modelBuilder.Entity<CartProduct>()
+            .HasKey(i => new { i.ProductId, i.CartId });
+
+            modelBuilder.Entity<CartProduct>()
+                .HasOne(i => i.Product)
+                .WithMany(i => i.CartProducts)
+                .HasForeignKey(i => i.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartProduct>()
+                .HasOne(i => i.Cart)
+                .WithMany(i => i.CartProducts)
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartProducts> CartProducts { get; set; }
+        public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Image> Images { get; set; }

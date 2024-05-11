@@ -2,8 +2,9 @@
 {
     public class Cart : MainEntity
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; }
-        public ICollection<CartProducts> Products { get; set; }
+        public ICollection<Product> Products { get; set; } = [];
+        public ICollection<CartProduct> CartProducts { get; set; } = [];
     }
 }
