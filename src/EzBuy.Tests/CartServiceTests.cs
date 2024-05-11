@@ -1,12 +1,13 @@
 ﻿using EzBuy.Data;
 using EzBuy.Models;
 using EzBuy.Services;
+using EzBuy.ViewModels.Category;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace EzBuy.Tests
 {
@@ -21,19 +22,23 @@ namespace EzBuy.Tests
             this.context = settings.InitializeDatabase().GetAwaiter().GetResult();
             this.cartService = new CartService(context);
         }
-        [Fact]
+
+        [Test]
         public void CreateUserCartCreatesCart()
         {
             var user = new User { UserName = "xXPimpXx" };
             this.context.Users.Add(user);
             this.context.SaveChanges();
             user = this.context.Users.FirstOrDefault(x => x.UserName == "xXPimpXx");
+            Assert.That(user, Is.Not.Null);
             this.cartService.CreateUsersCart(user);
-            NUnit.Framework.Assert.AreEqual(1, this.context.Carts.Count());
+            Assert.That(this.context.Carts.Count(), Is.EqualTo(1));
             var cart = this.context.Carts.FirstOrDefault(x => x.Id == 1);
-            NUnit.Framework.Assert.AreEqual("xXPimpXx", cart.User.UserName);
+            Assert.That(cart, Is.Not.Null);
+            Assert.That(cart.User.UserName, Is.EqualTo("xXPimpXx"));
         }
-        [Fact]
+
+        [Test]
         public void AddProductTOCartCreatesConnections()
         {
             var cart = new Cart { Id = 1 };
@@ -50,10 +55,11 @@ namespace EzBuy.Tests
             product2 = this.context.Products.FirstOrDefault(x => x.Name == "MugClassic");
             this.cartService.AddProductToCart(product, cart);
             this.cartService.AddProductToCart(product2, cart);
-            NUnit.Framework.Assert.AreEqual(2, this.context.CartProducts.Count());
-            NUnit.Framework.Assert.AreEqual(2, cart.Products.Count());
+            Assert.That(this.context.CartProducts.Count(), Is.EqualTo(2));
+            Assert.That(cart.Products.Count(), Is.EqualTo(2));
         }
-        [Fact]
+
+        [Test]
         public void RemoveProductFromCartRemovesConnections()
         {
             var cart = new Cart { Id = 1 };
@@ -71,10 +77,11 @@ namespace EzBuy.Tests
             this.cartService.AddProductToCart(product, cart);
             this.cartService.AddProductToCart(product2, cart);
             this.cartService.RemoveProductFromCart(cart, product);
-            NUnit.Framework.Assert.AreEqual(1, cart.Products.Count());
-            NUnit.Framework.Assert.AreEqual(2, cart.Products.FirstOrDefault().ProductId);
+            Assert.That(cart.Products.Count(), Is.EqualTo(1));
+            Assert.That(cart.Products.FirstOrDefault().ProductId, Is.EqualTo(2));
         }
-        [Fact]
+
+        [Test]
         public void GetCartProductsReturnsAllProducts()
         {
             var cart = new Cart { Id = 1 };
@@ -92,11 +99,12 @@ namespace EzBuy.Tests
             this.cartService.AddProductToCart(product, cart);
             this.cartService.AddProductToCart(product2, cart);
             var products=this.cartService.GetCartsProducts(cart).ToList();
-            NUnit.Framework.Assert.AreEqual(2, products.Count());
-            NUnit.Framework.Assert.AreEqual("MugRoot", products[0].Name);
-            NUnit.Framework.Assert.AreEqual("MugClassic", products[1].Name);
+            Assert.That(products.Count(), Is.EqualTo(2));
+            Assert.That(products[0].Name, Is.EqualTo("MugRoot"));
+            Assert.That(products[1].Name, Is.EqualTo("MugClassic"));
         }
-        [Fact]
+
+        [Test]
         public void CalculateSumReturnsRightSum()
         {
             var cart = new Cart { Id = 1 };
@@ -114,9 +122,10 @@ namespace EzBuy.Tests
             this.cartService.AddProductToCart(product, cart);
             this.cartService.AddProductToCart(product2, cart);
             decimal sum=this.cartService.CalculateProductsSum(cart);
-            NUnit.Framework.Assert.AreEqual(97, sum);
+            Assert.That(sum, Is.EqualTo(97));
         }
-        [Fact]
+
+        [Test]
         public void CheckOutDeductsAndAdds()
         {
             var user = new User { UserName = "xXPimpXx",EzBucks=100 };
@@ -145,8 +154,8 @@ namespace EzBuy.Tests
             this.cartService.AddProductToCart(product2, cart);
 
             this.cartService.CheckOut(user, 0);
-            NUnit.Framework.Assert.AreEqual(3, user.EzBucks);
-            NUnit.Framework.Assert.AreEqual(117, seller.EzBucks);
+            Assert.That(user.EzBucks, Is.EqualTo(3));
+            Assert.That(seller.EzBucks, Is.EqualTo(117));
         }
     }
 }
